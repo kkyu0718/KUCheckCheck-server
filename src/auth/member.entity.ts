@@ -11,7 +11,7 @@ import { UserRole } from './dto/auth-credential.dto';
 
 @Entity()
 @Unique(['email'])
-export class User extends BaseEntity {
+export class MEMBER extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -37,10 +37,10 @@ export class User extends BaseEntity {
   detail_comment: string;
 
   @Column({ type: 'varchar', length: 80, nullable: true })
-  github_link: string;
+  github_id: string;
 
   @Column({ type: 'varchar', length: 80, nullable: true })
-  instagram_link: string;
+  instagram_id: string;
 
   @CreateDateColumn({
     type: 'timestamp',

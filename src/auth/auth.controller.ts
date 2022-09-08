@@ -19,7 +19,7 @@ import {
   SignUpInfoDto,
   UpdateUserInfoDto,
 } from './dto/auth-credential.dto';
-import { User } from './user.entity';
+import { User } from './member.entity';
 
 @Controller('auth')
 export class AuthController {

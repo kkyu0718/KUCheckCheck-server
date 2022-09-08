@@ -6,8 +6,8 @@ import {
   SignUpInfoDto,
   UpdateUserInfoDto,
 } from './dto/auth-credential.dto';
-import { User } from './user.entity';
-import { UserRepository } from './user.repository';
+import { MEMBER } from './member.entity';
+import { UserRepository } from './member.repository';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { CookieOptions, response } from 'express';
@@ -58,11 +58,8 @@ export class AuthService {
   async updateUserInfo(updateUserInfo: UpdateUserInfoDto) {
     const email = updateUserInfo['email'];
     const userInfo = await this.userRepository.findOneBy({ email });
-    // console.log('userInfo1', userInfo);
     const id = userInfo['id'];
-    // console.log('userInfo2', userInfo);
 
-    // return [userInfo, id];
     return this.userRepository.update(id, updateUserInfo);
   }
 }
