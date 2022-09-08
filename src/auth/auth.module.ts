@@ -6,21 +6,20 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
 import { UserRepository } from './user.repository';
-import * as config from 'config'
+import * as config from 'config';
 
-const jwtConfig = config.get('jwt')
+const jwtConfig = config.get('jwt');
 
-@Module({ 
+@Module({
   imports: [
-  PassportModule.register({ defaultStrategy : 'jwt'}),
-  JwtModule.register({
-    secret : process.env.JWT_SECRET || jwtConfig.secret,
-}),
-TypeOrmModule.forFeature([UserRepository])
-],
-controllers: [AuthController],
-providers: [AuthService, JwtStrategy, UserRepository],
-exports: [JwtStrategy, PassportModule]
-}
-  )
+    PassportModule.register({ defaultStrategy: 'jwt' }),
+    JwtModule.register({
+      secret: process.env.JWT_SECRET || jwtConfig.secret,
+    }),
+    TypeOrmModule.forFeature([UserRepository]),
+  ],
+  controllers: [AuthController],
+  providers: [AuthService, JwtStrategy, UserRepository],
+  exports: [JwtStrategy, PassportModule],
+})
 export class AuthModule {}

@@ -1,16 +1,21 @@
-import { Injectable, HttpException, ExecutionContext, HttpStatus } from '@nestjs/common';
+import {
+  Injectable,
+  HttpException,
+  ExecutionContext,
+  HttpStatus,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from '@nestjs/passport';
-import * as config from 'config'
+import * as config from 'config';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
-    constructor(private jwtService: JwtService){
-        super();
-    }
+  constructor(private jwtService: JwtService) {
+    super();
+  }
 
-    // 헤더에 포함되어 온 토큰값의 유효성 검사
-    canActivate(context: ExecutionContext) {
+  // 헤더에 포함되어 온 토큰값의 유효성 검사
+  canActivate(context: ExecutionContext) {
     const request = context.switchToHttp().getRequest();
 
     const { authorization } = request.headers;
@@ -19,7 +24,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       throw new HttpException('Token 전송 안됨', HttpStatus.UNAUTHORIZED);
     }
 
-    const token = authorization.replace('Bearer ', '')
+    const token = authorization.replace('Bearer ', '');
     request.user = this.validateToken(token);
     return true;
   }
