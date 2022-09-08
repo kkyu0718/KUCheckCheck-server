@@ -1,8 +1,8 @@
-import { Body, Controller, Post, Req, Res, UseGuards, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Post, Get, Req, Res, UseGuards, ValidationPipe } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { response, Response } from 'express';
 import { AuthService } from './auth.service';
-import { AuthCredentialsDto } from './dto/auth-credential.dto';
+import { MyInfoDto, SignInInfoDto, SignUpInfoDto } from './dto/auth-credential.dto';
 import { User } from './user.entity';
 
 @Controller('auth')
@@ -13,32 +13,33 @@ export class AuthController {
     
 
     @Post('/signup')
-    signUp(@Body(ValidationPipe) authCredentialsDto: AuthCredentialsDto) {
-        return this.authService.signUp(authCredentialsDto)
+    signUp(@Body(ValidationPipe) signUpInfoDto: SignUpInfoDto) {
+        return this.authService.signUp(signUpInfoDto)
     }
 
     @Post('/signin')
-    signIn(@Body(ValidationPipe) authCredentialsDto: AuthCredentialsDto,
-            @Res({passthrough: true}) response: Response){
+    signIn(@Body(ValidationPipe) signInInfoDto: SignInInfoDto,
+            //@Res({passthrough: true}) response: Response // access token 를 쿠키에 넣는다면 사용
+            ){
         
-        const user = this.authService.signIn(authCredentialsDto)
-            .then(res => {
-                            const {accessToken, refreshToken} = res.cookie
+        // const user = this.authService.signIn(signInInfoDto)
+        //     .then(res => {
+        //                     //const {accessToken, refreshToken} = res.cookie
                                                         
-                            response.cookie('accessToken', accessToken);
-                            response.cookie('refreshToken', refreshToken);
-                            return res.user
-                        })
+        //                     // response.cookie('accessToken', accessToken);
+        //                     // response.cookie('refreshToken', refreshToken);
+        //                     return res.user
+        //                 })
             
-        return user
+        // return user
+        return this.authService.signIn(signInInfoDto)
     }
 
-    @Post('/signout')
-    signOut(@Body(ValidationPipe) user: User,
-            @Res({passthrough: true}) response: Response){
-        response.cookie('accessToken', '');
-        response.cookie('refreshToken', '');
-        return this.authService.signOut(user)
+    //@UseGuards('jwt')
+    @Get('/myinfo')
+    myinfo(@Body(ValidationPipe) myInfoDto: MyInfoDto) {
+        return this.authService.getUserInfo(myInfoDto)
     }
+    
 
 }

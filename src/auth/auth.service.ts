@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AuthCredentialsDto } from './dto/auth-credential.dto';
+import { MyInfoDto, SignInInfoDto, SignUpInfoDto } from './dto/auth-credential.dto';
 import { User } from './user.entity';
 import { UserRepository } from './user.repository';
 import * as bcrypt from 'bcryptjs';
@@ -15,28 +15,38 @@ export class AuthService {
         private jwtService: JwtService
     ) {}
 
-    async signUp(authCredentialsDto: AuthCredentialsDto){
-        return this.userRepository.createUser(authCredentialsDto)
+    async signUp(signUpInfoDto: SignUpInfoDto){
+        return this.userRepository.createUser(signUpInfoDto)
     }
 
-    async signIn(authCredentialsDto: AuthCredentialsDto){
-        const {username, password} = authCredentialsDto;
-        const user = await this.userRepository.findOneBy({username});
+    async signIn(signInInfoDto: SignInInfoDto){
+        const {email, password} = signInInfoDto;
+        const user = await this.userRepository.findOneBy({email});
+        const name = user.name;
 
         if ( user && (await bcrypt.compare(password, user.password ))) {
-            const payload = username
-            const accessToken = await this.jwtService.sign({payload}, {expiresIn : 60*60}) // 1hour
-            const refreshToken = await this.jwtService.sign({payload}, {expiresIn : 60*60*24}) // 24hour
-            const cookie = {accessToken, refreshToken}
+            const payload = {
+                "name" : user.name,
+                "role" : user.role,
+                "email" : user.email
+            }
+            const accessToken = await this.jwtService.sign(payload, {expiresIn : 60*60*2}) // 2hour
+            // const refreshToken = await this.jwtService.sign({payload}, {expiresIn : 60*60*24}) // 24hour
+            // const cookie = {accessToken, refreshToken}
 
-            await this.userRepository.saveRefreshToken(user, refreshToken)
-            return { user, cookie }
+            //await this.userRepository.saveRefreshToken(user, refreshToken)
+            return accessToken
         } else {
             throw new UnauthorizedException('Login Failed')
         }
     }
 
-    async signOut(user: User){
-        await this.userRepository.removeRefreshToken(user)
+    async getUserInfo(myInfoDto: MyInfoDto){
+        // const {accessToken} = myInfoDto;
+        // const decodedAccessToken = this.jwtService.decode(accessToken)
+        // const email = decodedAccessToken.email;
+        // const userInfo = this.userRepository.findOneBy({accessToken.email})
+
+        // return 
     }
 }
