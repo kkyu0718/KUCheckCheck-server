@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn, Unique } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from "typeorm";
 
 enum UserRole {
     MEMBER = 'MEMBER',
@@ -24,24 +24,25 @@ export class User extends BaseEntity{
     @Column({default: UserRole.MEMBER})
     role: UserRole; 
 
-    @Column()
+    @Column({nullable: true})
     emoji: string;
 
     @Column()
     comment: string;
 
-    @Column()
+    @Column({nullable: true})
     detail_comment: string;
 
-    @Column()
+    @Column({nullable: true})
     github_link: string;
 
-    @Column()
+    @Column({nullable: true})
     instagram_link: string;
 
-    @Column()
-    created_at: string;
+    @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
+    created_at: Date;
 
-    @Column()
-    updated_at: string;
+    @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
+    updated_at: Date;
+    
 }
