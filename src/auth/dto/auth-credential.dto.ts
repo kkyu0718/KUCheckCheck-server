@@ -1,3 +1,8 @@
+export enum UserRole {
+  MEMBER = 'MEMBER',
+  MANAGER = 'MANAGER',
+}
+
 export class SignUpInfoDto {
   // 필수 입력
   email: string;
@@ -20,4 +25,16 @@ export class SignInInfoDto {
 export class MyInfoDto {
   accessToken: string;
   // accessToken : name, role, email
+}
+
+export class UpdateUserInfoDto {
+  email: string;
+  password: string;
+  name: string;
+  emoji?: string;
+  comment: string;
+
+  detail_comment?: string;
+  github_link?: string;
+  instagram_link?: string;
 }

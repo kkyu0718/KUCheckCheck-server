@@ -4,6 +4,7 @@ import {
   MyInfoDto,
   SignInInfoDto,
   SignUpInfoDto,
+  UpdateUserInfoDto,
 } from './dto/auth-credential.dto';
 import { User } from './user.entity';
 import { UserRepository } from './user.repository';
@@ -19,14 +20,13 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signUp(signUpInfoDto: SignUpInfoDto) {
-    return this.userRepository.createUser(signUpInfoDto);
+  async signUp(signUpInfo: SignUpInfoDto) {
+    return this.userRepository.createUser(signUpInfo);
   }
 
-  async signIn(signInInfoDto: SignInInfoDto) {
-    const { email, password } = signInInfoDto;
+  async signIn(signInInfo: SignInInfoDto) {
+    const { email, password } = signInInfo;
     const user = await this.userRepository.findOneBy({ email });
-    const name = user.name;
 
     if (user && (await bcrypt.compare(password, user.password))) {
       const payload = {
@@ -47,11 +47,22 @@ export class AuthService {
     }
   }
 
-  async getUserInfo(myInfoDto: MyInfoDto) {
-    // const {accessToken} = myInfoDto;
-    // const decodedAccessToken = this.jwtService.decode(accessToken)
-    // const email = decodedAccessToken.email;
-    // const userInfo = this.userRepository.findOneBy({accessToken.email})
-    // return
+  async getUserInfo(myInfo: MyInfoDto) {
+    const { accessToken } = myInfo;
+    const decodedAccessToken = await this.jwtService.decode(accessToken);
+    const email = decodedAccessToken['email'];
+    const userInfo = await this.userRepository.findOneBy({ email });
+    return userInfo;
+  }
+
+  async updateUserInfo(updateUserInfo: UpdateUserInfoDto) {
+    const email = updateUserInfo['email'];
+    const userInfo = await this.userRepository.findOneBy({ email });
+    // console.log('userInfo1', userInfo);
+    const id = userInfo['id'];
+    // console.log('userInfo2', userInfo);
+
+    // return [userInfo, id];
+    return this.userRepository.update(id, updateUserInfo);
   }
 }

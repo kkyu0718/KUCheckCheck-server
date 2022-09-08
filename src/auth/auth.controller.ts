@@ -3,6 +3,7 @@ import {
   Controller,
   Post,
   Get,
+  Put,
   Req,
   Res,
   UseGuards,
@@ -10,11 +11,13 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { response, Response } from 'express';
+import { UserInfo } from 'os';
 import { AuthService } from './auth.service';
 import {
   MyInfoDto,
   SignInInfoDto,
   SignUpInfoDto,
+  UpdateUserInfoDto,
 } from './dto/auth-credential.dto';
 import { User } from './user.entity';
 
@@ -28,20 +31,7 @@ export class AuthController {
   }
 
   @Post('/signin')
-  signIn(
-    @Body(ValidationPipe) signInInfoDto: SignInInfoDto,
-    //@Res({passthrough: true}) response: Response // access token 를 쿠키에 넣는다면 사용
-  ) {
-    // const user = this.authService.signIn(signInInfoDto)
-    //     .then(res => {
-    //                     //const {accessToken, refreshToken} = res.cookie
-
-    //                     // response.cookie('accessToken', accessToken);
-    //                     // response.cookie('refreshToken', refreshToken);
-    //                     return res.user
-    //                 })
-
-    // return user
+  signIn(@Body(ValidationPipe) signInInfoDto: SignInInfoDto) {
     return this.authService.signIn(signInInfoDto);
   }
 
@@ -49,5 +39,10 @@ export class AuthController {
   @Get('/myinfo')
   myinfo(@Body(ValidationPipe) myInfoDto: MyInfoDto) {
     return this.authService.getUserInfo(myInfoDto);
+  }
+
+  @Put('/myinfo/update')
+  updateMyinfo(@Body(ValidationPipe) updateUserInfoDto: UpdateUserInfoDto) {
+    return this.authService.updateUserInfo(updateUserInfoDto);
   }
 }

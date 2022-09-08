@@ -18,15 +18,15 @@ export class UserRepository extends Repository<User> {
     );
   }
 
-  async createUser(signUpInfoDto: SignUpInfoDto): Promise<any> {
-    const { password } = signUpInfoDto;
+  async createUser(signUpInfo: SignUpInfoDto): Promise<any> {
+    const { password } = signUpInfo;
 
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    signUpInfoDto['password'] = hashedPassword; // 비밀번호 암호화된 것으로 변경
+    signUpInfo['password'] = hashedPassword; // 비밀번호 암호화된 것으로 변경
 
-    const user = this.create(signUpInfoDto);
+    const user = this.create(signUpInfo);
 
     // 같은 username 이 있을 경우 error 발생
     try {
