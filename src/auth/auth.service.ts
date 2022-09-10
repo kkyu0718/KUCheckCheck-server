@@ -11,6 +11,7 @@ import { UserRepository } from './member.repository';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { CookieOptions, response } from 'express';
+import { decode } from 'punycode';
 
 @Injectable()
 export class AuthService {
@@ -20,12 +21,12 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signUp(signUpInfo: SignUpInfoDto) {
-    return this.userRepository.createUser(signUpInfo);
+  async signUp(signUpInfoDto: SignUpInfoDto) {
+    return this.userRepository.createUser(signUpInfoDto);
   }
 
-  async signIn(signInInfo: SignInInfoDto) {
-    const { email, password } = signInInfo;
+  async signIn(signInInfoDto: SignInInfoDto) {
+    const { email, password } = signInInfoDto;
     const user = await this.userRepository.findOneBy({ email });
 
     if (user && (await bcrypt.compare(password, user.password))) {
@@ -35,31 +36,31 @@ export class AuthService {
         email: user.email,
       };
       const accessToken = await this.jwtService.sign(payload, {
-        expiresIn: 60 * 60 * 2,
-      }); // 2hour
-      // const refreshToken = await this.jwtService.sign({payload}, {expiresIn : 60*60*24}) // 24hour
-      // const cookie = {accessToken, refreshToken}
+        expiresIn: '2h',
+      });
 
-      //await this.userRepository.saveRefreshToken(user, refreshToken)
-      return accessToken;
+      const data = {
+        accessToken,
+      };
+      return data;
     } else {
       throw new UnauthorizedException('Login Failed');
     }
   }
 
-  async getUserInfo(myInfo: MyInfoDto) {
-    const { accessToken } = myInfo;
-    const decodedAccessToken = await this.jwtService.decode(accessToken);
-    const email = decodedAccessToken['email'];
+  async getUserInfo(accessToken) {
+    const token = accessToken.replace('Bearer ', '');
+    const decodedToken = await this.jwtService.decode(token);
+    const email = decodedToken['email'];
     const userInfo = await this.userRepository.findOneBy({ email });
     return userInfo;
   }
 
-  async updateUserInfo(updateUserInfo: UpdateUserInfoDto) {
-    const email = updateUserInfo['email'];
+  async updateUserInfo(updateUserInfoDto: UpdateUserInfoDto) {
+    const email = updateUserInfoDto['email'];
     const userInfo = await this.userRepository.findOneBy({ email });
     const id = userInfo['id'];
 
-    return this.userRepository.update(id, updateUserInfo);
+    return this.userRepository.update(id, updateUserInfoDto);
   }
 }

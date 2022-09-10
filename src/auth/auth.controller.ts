@@ -8,18 +8,16 @@ import {
   Res,
   UseGuards,
   ValidationPipe,
+  Headers,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
-import { response, Response } from 'express';
-import { UserInfo } from 'os';
+
 import { AuthService } from './auth.service';
 import {
-  MyInfoDto,
   SignInInfoDto,
   SignUpInfoDto,
   UpdateUserInfoDto,
 } from './dto/auth-credential.dto';
-import { User } from './member.entity';
+import { JwtAuthGuard } from './jwt.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -35,12 +33,14 @@ export class AuthController {
     return this.authService.signIn(signInInfoDto);
   }
 
-  //@UseGuards('jwt')
+  @UseGuards(JwtAuthGuard)
   @Get('/myinfo')
-  myinfo(@Body(ValidationPipe) myInfoDto: MyInfoDto) {
-    return this.authService.getUserInfo(myInfoDto);
+  myinfo(@Headers() headers) {
+    const accessToken = headers['authorization'];
+    return this.authService.getUserInfo(accessToken);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put('/myinfo/update')
   updateMyinfo(@Body(ValidationPipe) updateUserInfoDto: UpdateUserInfoDto) {
     return this.authService.updateUserInfo(updateUserInfoDto);
