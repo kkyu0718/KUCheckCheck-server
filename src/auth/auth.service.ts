@@ -1,33 +1,29 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
-  MyInfoDto,
   SignInInfoDto,
   SignUpInfoDto,
   UpdateUserInfoDto,
 } from './dto/auth-credential.dto';
-import { MEMBER } from './member.entity';
-import { UserRepository } from './member.repository';
+import { MemberRepository } from './member.repository';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
-import { CookieOptions, response } from 'express';
-import { decode } from 'punycode';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(UserRepository)
-    private userRepository: UserRepository,
+    @InjectRepository(MemberRepository)
+    private memberRepository: MemberRepository,
     private jwtService: JwtService,
   ) {}
 
   async signUp(signUpInfoDto: SignUpInfoDto) {
-    return this.userRepository.createUser(signUpInfoDto);
+    return this.memberRepository.createUser(signUpInfoDto);
   }
 
   async signIn(signInInfoDto: SignInInfoDto) {
     const { email, password } = signInInfoDto;
-    const user = await this.userRepository.findOneBy({ email });
+    const user = await this.memberRepository.findOneBy({ email });
 
     if (user && (await bcrypt.compare(password, user.password))) {
       const payload = {
@@ -52,16 +48,16 @@ export class AuthService {
     const token = accessToken.replace('Bearer ', '');
     const decodedToken = await this.jwtService.decode(token);
     const email = decodedToken['email'];
-    const userInfo = await this.userRepository.findOneBy({ email });
+    const userInfo = await this.memberRepository.findOneBy({ email });
     return userInfo;
   }
 
   async updateUserInfo(updateUserInfoDto: UpdateUserInfoDto) {
     const email = updateUserInfoDto['email'];
-    const userInfo = await this.userRepository.findOneBy({ email });
+    const userInfo = await this.memberRepository.findOneBy({ email });
     const id = userInfo['id'];
 
-    await this.userRepository.update(id, updateUserInfoDto);
+    await this.memberRepository.update(id, updateUserInfoDto);
 
     return '업데이트 성공';
   }

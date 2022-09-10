@@ -1,8 +1,10 @@
+import { NOTICE } from 'src/notice/notice.entity';
 import {
   BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   Unique,
   UpdateDateColumn,
@@ -54,4 +56,9 @@ export class MEMBER extends BaseEntity {
     onUpdate: 'CURRENT_TIMESTAMP(6)',
   })
   updated_at: Date;
+
+  @OneToMany((type) => NOTICE, (notices) => notices.updated_by, {
+    eager: false,
+  })
+  notices: NOTICE[];
 }

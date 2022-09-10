@@ -9,7 +9,7 @@ import * as bcrypt from 'bcryptjs';
 import { SignUpInfoDto } from './dto/auth-credential.dto';
 
 @Injectable()
-export class UserRepository extends Repository<MEMBER> {
+export class MemberRepository extends Repository<MEMBER> {
   constructor(private dataSource: DataSource) {
     super(
       MEMBER,
