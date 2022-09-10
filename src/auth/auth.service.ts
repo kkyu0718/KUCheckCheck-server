@@ -44,7 +44,7 @@ export class AuthService {
       };
       return data;
     } else {
-      throw new UnauthorizedException('Login Failed');
+      throw new UnauthorizedException('로그인 실패');
     }
   }
 
@@ -61,6 +61,8 @@ export class AuthService {
     const userInfo = await this.userRepository.findOneBy({ email });
     const id = userInfo['id'];
 
-    return this.userRepository.update(id, updateUserInfoDto);
+    await this.userRepository.update(id, updateUserInfoDto);
+
+    return '업데이트 성공';
   }
 }

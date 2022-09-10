@@ -40,16 +40,4 @@ export class UserRepository extends Repository<MEMBER> {
       }
     }
   }
-
-  // async saveRefreshToken(user: User, refreshToken: string){
-  //     this.update(user.id, {
-  //         refreshToken : refreshToken
-  //     })
-  // }
-
-  // async removeRefreshToken(user: User){
-  //     this.update(user.id, {
-  //         refreshToken : null
-  //     })
-  // }
 }
