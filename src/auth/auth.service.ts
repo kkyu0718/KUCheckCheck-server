@@ -37,7 +37,6 @@ export class AuthService {
 
       const data = {
         accessToken,
-        ...payload,
       };
       return data;
     } else {
