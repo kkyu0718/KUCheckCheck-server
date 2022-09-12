@@ -9,11 +9,12 @@ export class SignUpInfoDto {
   password: string;
   name: string;
   comment: string;
+  emoji: string;
 
   // 선택사항
   detail_comment?: string;
-  github_link?: string;
-  instagram_link?: string;
+  github_id?: string;
+  instagram_id?: string;
 }
 
 export class SignInInfoDto {
@@ -35,6 +36,6 @@ export class UpdateUserInfoDto {
   comment: string;
 
   detail_comment?: string;
-  github_link?: string;
-  instagram_link?: string;
+  github_id?: string;
+  instagram_id?: string;
 }
