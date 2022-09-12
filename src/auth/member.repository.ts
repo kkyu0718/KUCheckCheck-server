@@ -34,7 +34,7 @@ export class MemberRepository extends Repository<MEMBER> {
       return savedInfo;
     } catch (error) {
       if (error.code == '23505') {
-        throw new ConflictException('Existing Email');
+        throw new ConflictException('existing_email');
       } else {
         throw new InternalServerErrorException(error);
       }
