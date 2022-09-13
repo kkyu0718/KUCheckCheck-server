@@ -4,15 +4,15 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
-import { MEMBER } from './member.entity';
+import { member } from './member.entity';
 import * as bcrypt from 'bcryptjs';
 import { SignUpInfoDto } from './dto/auth-credential.dto';
 
 @Injectable()
-export class MemberRepository extends Repository<MEMBER> {
+export class MemberRepository extends Repository<member> {
   constructor(private dataSource: DataSource) {
     super(
-      MEMBER,
+      member,
       dataSource.createEntityManager(),
       dataSource.createQueryRunner(),
     );

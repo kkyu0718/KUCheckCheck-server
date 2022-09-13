@@ -1,4 +1,4 @@
-import { MEMBER } from 'src/auth/member.entity';
+import { member } from 'src/auth/member.entity';
 import {
   BaseEntity,
   Column,
@@ -10,11 +10,11 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class NOTICE extends BaseEntity {
-  @PrimaryGeneratedColumn()
+export class notice extends BaseEntity {
+  @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column({ type: 'bit', length: 1 })
+  @Column({ type: 'bit', length: 1, default: 0 })
   is_show: number;
 
   @Column({ type: 'varchar', length: 254 })
@@ -29,8 +29,10 @@ export class NOTICE extends BaseEntity {
   })
   created_at: Date;
 
-  @Column({ type: 'int' })
-  created_by: number;
+  @ManyToOne((type) => member, (created_by) => created_by.notices, {
+    eager: false,
+  })
+  created_by: member['id'];
 
   @UpdateDateColumn({
     type: 'timestamp',
@@ -39,8 +41,8 @@ export class NOTICE extends BaseEntity {
   })
   updated_at: Date;
 
-  @ManyToOne((type) => MEMBER, (updated_by) => updated_by.notices, {
+  @ManyToOne((type) => member, (updated_by) => updated_by.notices, {
     eager: false,
   })
-  updated_by: MEMBER;
+  updated_by: member['id'];
 }

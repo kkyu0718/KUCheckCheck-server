@@ -1,4 +1,4 @@
-import { NOTICE } from 'src/notice/notice.entity';
+import { notice } from 'src/notice/notice.entity';
 import {
   BaseEntity,
   Column,
@@ -13,8 +13,8 @@ import { UserRole } from './dto/auth-credential.dto';
 
 @Entity()
 @Unique(['email'])
-export class MEMBER extends BaseEntity {
-  @PrimaryGeneratedColumn()
+export class member extends BaseEntity {
+  @PrimaryGeneratedColumn('increment')
   id: number;
 
   @Column({ type: 'varchar', length: 80 })
@@ -57,8 +57,8 @@ export class MEMBER extends BaseEntity {
   })
   updated_at: Date;
 
-  @OneToMany((type) => NOTICE, (notices) => notices.updated_by, {
+  @OneToMany((type) => notice, (notices) => notices.updated_by, {
     eager: false,
   })
-  notices: NOTICE[];
+  notices: notice[];
 }
