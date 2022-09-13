@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   SignInInfoDto,
@@ -24,6 +28,7 @@ export class AuthService {
   async signIn(signInInfoDto: SignInInfoDto) {
     const { email, password } = signInInfoDto;
     const user = await this.memberRepository.findOneBy({ email });
+    if (!user) throw new NotFoundException('user_not_found');
 
     if (user && (await bcrypt.compare(password, user.password))) {
       const payload = {
@@ -40,7 +45,7 @@ export class AuthService {
       };
       return data;
     } else {
-      throw new UnauthorizedException('로그인 실패');
+      throw new UnauthorizedException('login_failure');
     }
   }
 
