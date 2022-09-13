@@ -59,6 +59,9 @@ export class AuthService {
 
     await this.memberRepository.update(id, updateUserInfoDto);
 
-    return '업데이트 성공';
+    return {
+      message: 'update success',
+      data: await this.memberRepository.findOneBy({ id }),
+    };
   }
 }

@@ -24,7 +24,7 @@ export class NoticeRepository extends Repository<notice> {
     await this.update(id, body);
     return {
       message: '업데이트 성공',
-      data: this.findOneBy({ id }),
+      data: await this.findOneBy({ id }),
     };
   }
 }
