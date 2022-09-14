@@ -14,14 +14,13 @@ export class NoticeService {
     private jwtService: JwtService,
   ) {}
 
-  async createNotice(accessToken, body: CreateNoticeDto) {
+  async createNotice(createNoticeDto: CreateNoticeDto) {
+    const { accessToken, ...body } = createNoticeDto;
     const token = accessToken.replace('Bearer ', '');
     const decodedToken = await this.jwtService.decode(token);
-    const email = decodedToken['email'];
-    const userInfo = await this.memberRepository.findOneBy({ email });
-    const userId = userInfo.id;
+    const id = decodedToken['id'];
     const data = {
-      created_by: userId,
+      created_by: id,
       ...body,
     };
     return this.noticeRepository.createNotice(data);

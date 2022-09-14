@@ -19,9 +19,12 @@ export class NoticeController {
   constructor(private noticeService: NoticeService) {}
 
   @Post('/')
-  createNotice(@Headers() headers, @Body() body: CreateNoticeDto) {
-    const accessToken = headers['authorization'];
-    return this.noticeService.createNotice(accessToken, body);
+  createNotice(@Headers('authorization') accessToken, @Body() body) {
+    const createNoticeDto: CreateNoticeDto = {
+      accessToken,
+      ...body,
+    };
+    return this.noticeService.createNotice(createNoticeDto);
   }
 
   @Get('/')

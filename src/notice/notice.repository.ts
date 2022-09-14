@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
-import { CreateNoticeDto } from './dto/notice.dto';
 import { notice } from './notice.entity';
 
 @Injectable()
@@ -13,10 +12,11 @@ export class NoticeRepository extends Repository<notice> {
     );
   }
 
-  async createNotice(createNoticeDto: CreateNoticeDto): Promise<any> {
-    const data = await this.save(createNoticeDto);
-    const { id, created_by } = data;
-    await this.update(id, { updated_by: created_by });
+  async createNotice(data): Promise<any> {
+    const savedData = await this.save(data);
+    const { id, created_by } = savedData;
+    await this.update(id, { updated_by: created_by }); // updated_by -> created_by 와 동일하게 저장
+
     return this.findOneBy({ id });
   }
 
