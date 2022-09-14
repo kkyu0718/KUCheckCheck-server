@@ -21,7 +21,7 @@ export class NoticeController {
   constructor(private noticeService: NoticeService) {}
 
   @Post('/')
-  // @Roles('MEMBER')
+  // @Roles('MANAGER')
   createNotice(@Headers('authorization') accessToken, @Body() body) {
     const createNoticeDto: CreateNoticeDto = {
       accessToken,
