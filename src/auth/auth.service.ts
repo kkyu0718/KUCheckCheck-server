@@ -32,9 +32,10 @@ export class AuthService {
 
     if (user && (await bcrypt.compare(password, user.password))) {
       const payload = {
+        id: user.id,
+        email: user.email,
         name: user.name,
         role: user.role,
-        email: user.email,
       };
       const accessToken = await this.jwtService.sign(payload, {
         expiresIn: '2h',
