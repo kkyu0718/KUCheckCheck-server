@@ -6,11 +6,13 @@ import {
   Put,
   UseGuards,
   ValidationPipe,
-  Headers,
+  Param,
+  ParseIntPipe,
 } from '@nestjs/common';
 
 import { AuthService } from './auth.service';
 import {
+  GetUserInfoDto,
   SignInInfoDto,
   SignUpInfoDto,
   UpdateUserInfoDto,
@@ -32,15 +34,21 @@ export class AuthController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('/myinfo')
-  myinfo(@Headers() headers) {
-    const accessToken = headers['authorization'];
-    return this.authService.getUserInfo(accessToken);
+  @Get('/user/:id')
+  getUserInfo(@Param('id', ParseIntPipe) id: number) {
+    const getUserInfoDto: GetUserInfoDto = {
+      id: id,
+    };
+    return this.authService.getUserInfo(getUserInfoDto);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Put('/myinfo/update')
-  updateMyinfo(@Body(ValidationPipe) updateUserInfoDto: UpdateUserInfoDto) {
+  @Put('/user/:id/update')
+  updateUserinfo(@Body() body, @Param('id', ParseIntPipe) id: number) {
+    const updateUserInfoDto: UpdateUserInfoDto = {
+      ...body,
+      id: id,
+    };
     return this.authService.updateUserInfo(updateUserInfoDto);
   }
 }

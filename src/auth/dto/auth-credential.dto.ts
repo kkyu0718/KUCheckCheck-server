@@ -23,12 +23,12 @@ export class SignInInfoDto {
   password: string;
 }
 
-export class MyInfoDto {
-  accessToken: string;
-  // accessToken : name, role, email
+export class GetUserInfoDto {
+  id: number; // 요청하는 정보 id
 }
 
 export class UpdateUserInfoDto {
+  id: number;
   email: string;
   password: string;
   name: string;

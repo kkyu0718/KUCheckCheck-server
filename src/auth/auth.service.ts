@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
+  GetUserInfoDto,
   SignInInfoDto,
   SignUpInfoDto,
   UpdateUserInfoDto,
@@ -50,20 +51,16 @@ export class AuthService {
     }
   }
 
-  async getUserInfo(accessToken) {
-    const token = accessToken.replace('Bearer ', '');
-    const decodedToken = await this.jwtService.decode(token);
-    const email = decodedToken['email'];
-    const userInfo = await this.memberRepository.findOneBy({ email });
+  async getUserInfo(getUserInfoDto: GetUserInfoDto) {
+    const { id } = getUserInfoDto;
+    const userInfo = await this.memberRepository.findOneBy({ id });
     return userInfo;
   }
 
   async updateUserInfo(updateUserInfoDto: UpdateUserInfoDto) {
-    const email = updateUserInfoDto['email'];
-    const userInfo = await this.memberRepository.findOneBy({ email });
-    const id = userInfo['id'];
+    const { id, ...body } = updateUserInfoDto;
 
-    await this.memberRepository.update(id, updateUserInfoDto);
+    await this.memberRepository.update(id, body);
 
     return {
       message: 'update success',
