@@ -1,6 +1,6 @@
 export enum UserRole {
-  MEMBER = 'MEMBER',
-  MANAGER = 'MANAGER',
+  MEMBER = 'MEMBER', // index 0
+  MANAGER = 'MANAGER', // index 1
 }
 
 export class SignUpInfoDto {
