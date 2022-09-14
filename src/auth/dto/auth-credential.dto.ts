@@ -9,7 +9,6 @@ export class SignUpInfoDto {
   password: string;
   name: string;
   comment: string;
-  emoji: string;
 
   // 선택사항
   detail_comment?: string;
