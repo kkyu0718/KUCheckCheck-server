@@ -8,8 +8,7 @@ import * as config from 'config';
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
-    @InjectRepository(MemberRepository)
-    private memberRepository: MemberRepository,
+
   ) {
     super({
       secretOrKey: process.env.JWT_SECRET || config.get('jwt'),
