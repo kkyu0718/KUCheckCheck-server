@@ -1,10 +1,13 @@
+import { course } from './../course/course.entity';
 import { member } from 'src/auth/member.entity';
 import {
   BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -62,9 +65,10 @@ export class semester extends BaseEntity {
   })
   created_at: Date;
 
-  @ManyToOne((type) => member, (created_by) => created_by.semesters, {
+  @ManyToOne(() => member, (created_by) => created_by.semesters, {
     eager: false,
   })
+  @JoinColumn({ name: 'created_by' })
   created_by: member['id'];
 
   @UpdateDateColumn({
@@ -74,8 +78,14 @@ export class semester extends BaseEntity {
   })
   updated_at: Date;
 
-  @ManyToOne((type) => member, (updated_by) => updated_by.notices, {
+  @ManyToOne(() => member, (updated_by) => updated_by.notices, {
     eager: false,
   })
+  @JoinColumn({ name: 'updated_by' })
   updated_by: member['id'];
+
+  @OneToMany(() => course, (course) => course.semester_id, {
+    eager: false,
+  })
+  courses: course[];
 }
