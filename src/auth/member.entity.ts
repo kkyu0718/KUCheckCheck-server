@@ -1,4 +1,5 @@
 import { notice } from 'src/notice/notice.entity';
+import { semester } from 'src/semester/semester.entity';
 import {
   BaseEntity,
   Column,
@@ -57,8 +58,13 @@ export class member extends BaseEntity {
   })
   updated_at: Date;
 
-  @OneToMany((type) => notice, (notices) => notices.updated_by, {
+  @OneToMany((type) => notice, (notices) => notices, {
     eager: false,
   })
   notices: notice[];
+
+  @OneToMany((type) => semester, (semesters) => semesters, {
+    eager: false,
+  })
+  semesters: semester[];
 }
