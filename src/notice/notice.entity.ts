@@ -4,7 +4,6 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -21,7 +20,7 @@ export class notice extends BaseEntity {
   @Column({ type: 'varchar', length: 254 })
   title: string;
 
-  @Column({ type: 'varchar', length: 254 })
+  @Column({ type: 'varchar', length: 254, nullable: true })
   content: string;
 
   @CreateDateColumn({

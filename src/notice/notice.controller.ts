@@ -3,28 +3,22 @@ import {
   Post,
   Body,
   UseGuards,
-  Headers,
   Get,
   Put,
   Param,
   ParseIntPipe,
-  ValidationPipe,
 } from '@nestjs/common';
 import { JwtStrategy } from 'src/auth/jwt.strategy';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { Roles } from 'src/auth/roles.decorator';
 import { CreateNoticeDto, UpdateNoticeDto } from './dto/notice.dto';
 import { NoticeService } from './notice.service';
-import { JwtService } from '@nestjs/jwt';
 import { DecodeToken } from '../auth/decode-token.decorator';
 
 @UseGuards(JwtStrategy, RolesGuard)
 @Controller('notice')
 export class NoticeController {
-  constructor(
-    private noticeService: NoticeService,
-    private jwtService: JwtService,
-  ) {}
+  constructor(private noticeService: NoticeService) {}
 
   @Post('/')
   // @Roles('MANAGER')

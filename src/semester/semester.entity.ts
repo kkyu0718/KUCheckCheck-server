@@ -18,7 +18,7 @@ export class semester extends BaseEntity {
   semester_year: string;
 
   @Column({ type: 'varchar', length: 5 }) // FK
-  semester: number;
+  semester: string;
 
   @CreateDateColumn({
     type: 'timestamp',
