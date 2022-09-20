@@ -9,9 +9,10 @@ import { MemberRepository } from './auth/member.repository';
 import { typeORMConfig } from './configs/typeorm.config';
 import { NoticeModule } from './notice/notice.module';
 import { CourseModule } from './course/course.module';
+import { SemesterModule } from './semester/semester.module';
 
 @Module({
-  imports: [AuthModule, TypeOrmModule.forRoot(typeORMConfig), NoticeModule, CourseModule],
+  imports: [AuthModule, TypeOrmModule.forRoot(typeORMConfig), NoticeModule, CourseModule, SemesterModule],
   controllers: [AppController],
   providers: [AppService, MemberRepository, JwtStrategy, PassportModule],
   exports: [JwtStrategy, PassportModule],
