@@ -85,7 +85,7 @@ export class semester extends BaseEntity {
   updated_by: member['id'];
 
   @OneToMany(() => course, (course) => course.semester_id, {
-    eager: true,
+    eager: false,
   })
   courses: course[];
 }
