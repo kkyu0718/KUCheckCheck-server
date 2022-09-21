@@ -1,4 +1,7 @@
 export class CreateCourseDto {
+  member_id: number;
+  semester_year: string;
+  semester: string;
   type: number;
   difficulty: string;
   require_time: number;

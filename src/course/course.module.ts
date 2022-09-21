@@ -1,3 +1,4 @@
+import { SemesterRepository } from './../semester/semester.repository';
 import { Module } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -10,6 +11,6 @@ import { CourseService } from './course.service';
 @Module({
   imports: [TypeOrmModule.forFeature([course]), AuthModule],
   controllers: [CourseController],
-  providers: [CourseService, CourseRepository, JwtService],
+  providers: [CourseService, CourseRepository, JwtService, SemesterRepository],
 })
 export class CourseModule {}
