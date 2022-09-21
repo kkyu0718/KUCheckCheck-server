@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CourseRepository } from './course.repository';
-import { CreateCourseDto } from './dto/course.dto';
+import { CreateCourseDto, UpdateCourseDto } from './dto/course.dto';
 
 @Injectable()
 export class CourseService {
@@ -14,5 +14,7 @@ export class CourseService {
     return this.courseRepository.createCourse(createCourseDto);
   }
 
-  async updateCoures() {}
+  async updateCourse(updateCourseDto: UpdateCourseDto) {
+    return this.courseRepository.updateCourse(updateCourseDto);
+  }
 }

@@ -33,7 +33,7 @@ export class notice extends BaseEntity {
   @ManyToOne((type) => member, (created_by) => created_by.notices, {
     eager: true,
   })
-  @JoinColumn({name: 'created_by'})
+  @JoinColumn({ name: 'created_by' })
   created_by: member['id'];
 
   @UpdateDateColumn({
@@ -46,6 +46,6 @@ export class notice extends BaseEntity {
   @ManyToOne(() => member, (updated_by) => updated_by.notices, {
     eager: true,
   })
-  @JoinColumn({name: 'updated_by'})
+  @JoinColumn({ name: 'updated_by' })
   updated_by: member['id'];
 }

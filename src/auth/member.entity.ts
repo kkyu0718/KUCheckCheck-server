@@ -1,3 +1,4 @@
+import { attendance } from 'src/attendance/attendance.entity';
 import { course } from 'src/course/course.entity';
 import { notice } from 'src/notice/notice.entity';
 import { semester } from 'src/semester/semester.entity';
@@ -73,4 +74,9 @@ export class member extends BaseEntity {
     eager: false,
   })
   courses: course[];
+
+  @OneToMany(() => attendance, (attendance) => attendance.member_id, {
+    eager: false,
+  })
+  attendance: attendance[];
 }

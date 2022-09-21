@@ -1,3 +1,4 @@
+import { attendance } from './../attendance/attendance.entity';
 import { member } from 'src/auth/member.entity';
 import { semester } from 'src/semester/semester.entity';
 import {
@@ -7,6 +8,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -96,4 +98,9 @@ export class course extends BaseEntity {
     comment: '수정일',
   })
   updated_at: Date;
+
+  @OneToMany(() => attendance, (attendance) => attendance.course_id, {
+    eager: false,
+  })
+  attendance: attendance[];
 }

@@ -1,8 +1,17 @@
-import { Body, Controller, Query, Post, Put, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Query,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { DecodeToken } from 'src/auth/decode-token.decorator';
 import { JwtStrategy } from 'src/auth/jwt.strategy';
 import { CourseService } from './course.service';
-import { CreateCourseDto } from './dto/course.dto';
+import { CreateCourseDto, UpdateCourseDto } from './dto/course.dto';
 
 @UseGuards(JwtStrategy)
 @Controller('course')
@@ -23,5 +32,11 @@ export class CourseController {
   }
 
   @Put('/:id')
-  updateCourse() {}
+  updateCourse(@Param('id', ParseIntPipe) id: number, @Body() body) {
+    const updateCourseDto: UpdateCourseDto = {
+      course_id: id,
+      ...body,
+    };
+    return this.courseService.updateCourse(updateCourseDto);
+  }
 }

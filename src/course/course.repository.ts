@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { MemberRepository } from 'src/auth/member.repository';
 import { DataSource, Repository } from 'typeorm';
 import { course } from './course.entity';
-import { CreateCourseDto } from './dto/course.dto';
+import { CreateCourseDto, UpdateCourseDto } from './dto/course.dto';
 
 @Injectable()
 export class CourseRepository extends Repository<course> {
@@ -29,10 +29,16 @@ export class CourseRepository extends Repository<course> {
       semester_id,
       ...body,
     };
-    console.log(data);
     const result = await this.save(data);
     return result;
   }
 
-  async updateCourse() {}
+  async updateCourse(updateCourseDto: UpdateCourseDto) {
+    const { course_id, ...body } = updateCourseDto;
+    await this.update(course_id, body);
+    return {
+      message: '업데이트 성공',
+      data: await this.findOneBy({ id: course_id }),
+    };
+  }
 }
