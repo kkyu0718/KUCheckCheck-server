@@ -66,7 +66,7 @@ export class semester extends BaseEntity {
   created_at: Date;
 
   @ManyToOne(() => member, (created_by) => created_by.semesters, {
-    eager: false,
+    eager: true,
   })
   @JoinColumn({ name: 'created_by' })
   created_by: member['id'];
@@ -79,13 +79,13 @@ export class semester extends BaseEntity {
   updated_at: Date;
 
   @ManyToOne(() => member, (updated_by) => updated_by.notices, {
-    eager: false,
+    eager: true,
   })
   @JoinColumn({ name: 'updated_by' })
   updated_by: member['id'];
 
   @OneToMany(() => course, (course) => course.semester_id, {
-    eager: false,
+    eager: true,
   })
   courses: course[];
 }

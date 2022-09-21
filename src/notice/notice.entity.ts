@@ -44,7 +44,7 @@ export class notice extends BaseEntity {
   updated_at: Date;
 
   @ManyToOne(() => member, (updated_by) => updated_by.notices, {
-    eager: false,
+    eager: true,
   })
   @JoinColumn({name: 'updated_by'})
   updated_by: member['id'];

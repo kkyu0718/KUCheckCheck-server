@@ -17,13 +17,13 @@ export class course extends BaseEntity {
   id: number;
 
   @ManyToOne(() => member, (member_id) => member_id.courses, {
-    eager: false,
+    eager: true,
   }) // FK
   @JoinColumn({ name: 'member_id' })
   member_id: member['id'];
 
   @ManyToOne(() => semester, (semester) => semester, {
-    eager: false,
+    eager: true,
   }) // FK
   @JoinColumn({ name: 'semester_id' })
   semester_id: semester['id'];
