@@ -2,7 +2,7 @@ import {
   Body,
   Controller,
   Get,
-  Param,
+  Query,
   Post,
   UseGuards,
   ValidationPipe,
@@ -27,8 +27,8 @@ export class SemesterController {
     return this.semesterService.createSemester(createSemesterDto);
   }
 
-  @Get('/:semester_year-:semester')
-  getSemester(@Param() params) {
+  @Get('/')
+  getSemester(@Query() params) {
     const getSemesterDto: GetSemesterDto = params;
     return this.semesterService.getSemester(getSemesterDto);
   }
