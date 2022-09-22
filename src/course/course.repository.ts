@@ -1,5 +1,5 @@
 import { SemesterRepository } from './../semester/semester.repository';
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { MemberRepository } from 'src/auth/member.repository';
 import { DataSource, Repository } from 'typeorm';
 import { course } from './course.entity';
@@ -24,6 +24,12 @@ export class CourseRepository extends Repository<course> {
       semester_year,
       semester,
     });
+
+    // 학기 등록이 안 되어 있을 경우 에러 발생
+    if (semester_data === null) {
+      throw new InternalServerErrorException('학기 등록을 먼저 해주세요');
+    }
+
     const semester_id = semester_data['id'];
     const data = {
       semester_id,

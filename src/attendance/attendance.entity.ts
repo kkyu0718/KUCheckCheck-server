@@ -8,10 +8,12 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  Unique,
   UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
+@Unique(['member_id', 'course_id'])
 export class attendance extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
@@ -22,7 +24,7 @@ export class attendance extends BaseEntity {
   @JoinColumn({ name: 'member_id' })
   member_id: member['id'];
 
-  @ManyToOne(() => course, (course) => course, {
+  @ManyToOne(() => course, (course_id) => course_id.attendance, {
     eager: true,
   }) // FK
   @JoinColumn({ name: 'course_id' })
