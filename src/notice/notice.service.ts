@@ -15,22 +15,14 @@ export class NoticeService {
   ) {}
 
   async createNotice(createNoticeDto: CreateNoticeDto) {
-    const { accessToken, ...body } = createNoticeDto;
-    const token = accessToken.replace('Bearer ', '');
-    const decodedToken = await this.jwtService.decode(token);
-    const id = decodedToken['id'];
-    const data = {
-      created_by: id,
-      ...body,
-    };
-    return this.noticeRepository.createNotice(data);
+    return this.noticeRepository.createNotice(createNoticeDto);
   }
 
   async getAllNotice() {
     return this.noticeRepository.find();
   }
 
-  async updateOneNotice(id: number, body: UpdateNoticeDto) {
-    return this.noticeRepository.updateOneNotice(id, body);
+  async updateNotice(updateNoticeDto: UpdateNoticeDto) {
+    return this.noticeRepository.updateNotice(updateNoticeDto);
   }
 }

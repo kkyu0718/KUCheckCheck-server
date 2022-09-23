@@ -3,7 +3,6 @@ import {
   Post,
   Body,
   UseGuards,
-  Headers,
   Get,
   Put,
   Param,
@@ -14,6 +13,7 @@ import { RolesGuard } from 'src/auth/roles.guard';
 import { Roles } from 'src/auth/roles.decorator';
 import { CreateNoticeDto, UpdateNoticeDto } from './dto/notice.dto';
 import { NoticeService } from './notice.service';
+import { DecodeToken } from '../auth/decode-token.decorator';
 
 @UseGuards(JwtStrategy, RolesGuard)
 @Controller('notice')
@@ -22,9 +22,10 @@ export class NoticeController {
 
   @Post('/')
   // @Roles('MANAGER')
-  createNotice(@Headers('authorization') accessToken, @Body() body) {
+  async createNotice(@DecodeToken() decodedToken, @Body() body) {
+    const user_id = decodedToken['id'];
     const createNoticeDto: CreateNoticeDto = {
-      accessToken,
+      created_by: user_id,
       ...body,
     };
     return this.noticeService.createNotice(createNoticeDto);
@@ -37,9 +38,16 @@ export class NoticeController {
 
   @Put('/:id')
   updateOneNotice(
+    @DecodeToken() decodedToken,
     @Param('id', ParseIntPipe) id: number,
-    @Body() body: UpdateNoticeDto,
+    @Body() body,
   ) {
-    return this.noticeService.updateOneNotice(id, body);
+    const user_id = decodedToken['id'];
+    const updateNoticeDto: UpdateNoticeDto = {
+      notice_id: id,
+      updated_by: user_id,
+      ...body,
+    };
+    return this.noticeService.updateNotice(updateNoticeDto);
   }
 }

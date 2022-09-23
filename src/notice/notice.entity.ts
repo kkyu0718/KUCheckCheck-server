@@ -4,6 +4,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -20,7 +21,7 @@ export class notice extends BaseEntity {
   @Column({ type: 'varchar', length: 254 })
   title: string;
 
-  @Column({ type: 'varchar', length: 254 })
+  @Column({ type: 'varchar', length: 254, nullable: true })
   content: string;
 
   @CreateDateColumn({
@@ -30,8 +31,9 @@ export class notice extends BaseEntity {
   created_at: Date;
 
   @ManyToOne((type) => member, (created_by) => created_by.notices, {
-    eager: false,
+    eager: true,
   })
+  @JoinColumn({ name: 'created_by' })
   created_by: member['id'];
 
   @UpdateDateColumn({
@@ -41,8 +43,9 @@ export class notice extends BaseEntity {
   })
   updated_at: Date;
 
-  @ManyToOne((type) => member, (updated_by) => updated_by.notices, {
-    eager: false,
+  @ManyToOne(() => member, (updated_by) => updated_by.notices, {
+    eager: true,
   })
+  @JoinColumn({ name: 'updated_by' })
   updated_by: member['id'];
 }
