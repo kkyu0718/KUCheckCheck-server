@@ -9,10 +9,12 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  Unique,
   UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
+@Unique(['semester_year', 'semester'])
 export class semester extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
