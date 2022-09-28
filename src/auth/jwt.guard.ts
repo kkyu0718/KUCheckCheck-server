@@ -30,7 +30,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   }
 
   validateToken(token: string) {
-    const dbConfig = config.get('db');
+    const dbConfig = config.get('jwt');
     const secretKey = dbConfig.secret;
 
     try {
@@ -46,7 +46,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
           throw new HttpException('토큰이 만료되었습니다.', 401);
 
         default:
-          throw new HttpException('서버 오류입니다.', 500);
+          throw new HttpException('서버 오류입니다. jwt.guard.ts', 500);
       }
     }
   }
