@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   Put,
   Query,
@@ -59,10 +60,20 @@ export class WeekController {
   }
 
   @Get('/')
-  getWeek() {
-    const date = new Date();
-    // const date = new Date(2022, 4, 19)
+  getWeek(@Query('date') dateInput) {
+    let date = new Date();
+    return date;
+    // if (dateInput !== undefined){
+    //   const year = Number(dateInput.slice(0,4));
+    //   const month = Number(dateInput.slice(4,6));
+    //   const day = Number(dateInput.slice(6,));
+    //   console.log(year, month, day)
+    //   date = new Date(year, month-1, day);
+    // }
+    // date = new Date(2022, 4, 19)
+    console.log(date);
     const getWeekDto: GetWeekDto = { date };
     return this.weekService.getWeek(getWeekDto);
   }
+
 }
