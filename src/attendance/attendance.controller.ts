@@ -15,8 +15,9 @@ import {
   GetAttendanceDto,
   UpdateAttendanceDto,
 } from './dto/attendance.dto';
+import { JwtAuthGuard } from 'src/auth/jwt.guard';
 
-@UseGuards(JwtStrategy)
+@UseGuards(JwtAuthGuard)
 @Controller('attendance')
 export class AttendanceController {
   constructor(private attendanceService: AttendanceService) {}

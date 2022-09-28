@@ -2,6 +2,7 @@ import { attendance } from 'src/attendance/attendance.entity';
 import { course } from 'src/course/course.entity';
 import { notice } from 'src/notice/notice.entity';
 import { semester } from 'src/semester/semester.entity';
+import { week } from 'src/week/week.entity';
 import {
   BaseEntity,
   Column,
@@ -79,4 +80,9 @@ export class member extends BaseEntity {
     eager: false,
   })
   attendance: attendance[];
+
+  @OneToMany(() => week, (week) => week, {
+    eager: false,
+  })
+  week: week[];
 }

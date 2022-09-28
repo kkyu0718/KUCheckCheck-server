@@ -11,9 +11,10 @@ import { NoticeModule } from './notice/notice.module';
 import { CourseModule } from './course/course.module';
 import { SemesterModule } from './semester/semester.module';
 import { AttendanceModule } from './attendance/attendance.module';
+import { WeekModule } from './week/week.module';
 
 @Module({
-  imports: [AuthModule, TypeOrmModule.forRoot(typeORMConfig), NoticeModule, CourseModule, SemesterModule, AttendanceModule],
+  imports: [AuthModule, TypeOrmModule.forRoot(typeORMConfig), NoticeModule, CourseModule, SemesterModule, AttendanceModule, WeekModule],
   controllers: [AppController],
   providers: [AppService, MemberRepository, JwtStrategy, PassportModule],
   exports: [JwtStrategy, PassportModule],

@@ -9,6 +9,7 @@ import { AttendanceRepository } from './attendance.repository';
 import { CourseRepository } from 'src/course/course.repository';
 import { SemesterRepository } from 'src/semester/semester.repository';
 import { course } from 'src/course/course.entity';
+import { JwtAuthGuard } from 'src/auth/jwt.guard';
 
 @Module({
   imports: [TypeOrmModule.forFeature([attendance, course]), AuthModule],
@@ -19,6 +20,7 @@ import { course } from 'src/course/course.entity';
     JwtService,
     SemesterRepository,
     CourseRepository,
+    JwtAuthGuard,
   ],
 })
 export class AttendanceModule {}

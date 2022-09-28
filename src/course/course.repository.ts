@@ -1,6 +1,5 @@
 import { SemesterRepository } from './../semester/semester.repository';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { MemberRepository } from 'src/auth/member.repository';
 import { DataSource, Repository } from 'typeorm';
 import { course } from './course.entity';
 import { CreateCourseDto, UpdateCourseDto } from './dto/course.dto';
