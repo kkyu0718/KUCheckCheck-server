@@ -61,24 +61,7 @@ export class WeekController {
 
   @Get('/')
   getWeek(@Query('date') dateInput) {
-    // let date = new Date();
-    let xmlHttpRequest;
-    if (window.XMLHttpRequest) {
-      // code for Firefox, Mozilla, IE7, etc.
-      xmlHttpRequest = new XMLHttpRequest();
-    } else if (window.ActiveXObject) {
-      // code for IE5, IE6
-      xmlHttpRequest = new ActiveXObject('Microsoft.XMLHTTP');
-    } else {
-      return;
-    }
-
-    xmlHttpRequest.open('HEAD', window.location.href.toString(), false);
-    xmlHttpRequest.setRequestHeader('ContentType', 'text/html');
-    xmlHttpRequest.send('');
-
-    const serverDate = xmlHttpRequest.getResponseHeader('Date');
-    const date = new Date(serverDate);
+    let date = new Date();
     return date;
     // if (dateInput !== undefined){
     //   const year = Number(dateInput.slice(0,4));
@@ -92,4 +75,5 @@ export class WeekController {
     const getWeekDto: GetWeekDto = { date };
     return this.weekService.getWeek(getWeekDto);
   }
+
 }
