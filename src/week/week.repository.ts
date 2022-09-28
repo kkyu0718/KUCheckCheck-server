@@ -4,7 +4,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { SemesterRepository } from 'src/semester/semester.repository';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, Repository, Timestamp } from 'typeorm';
 import { CreateWeekDto, GetWeekDto, UpdateWeekDto } from './dto/week.dto';
 import { week } from './week.entity';
 
@@ -56,7 +56,7 @@ export class WeekRepository extends Repository<week> {
     }
   }
 
-  async updateWeek(updateWeekDto: UpdateWeekDto){
+  async updateWeek(updateWeekDto: UpdateWeekDto) {
     const { semester_year, semester, ...body } = updateWeekDto;
     const semester_data = await this.semesterRepository.findOne({
       where: {
@@ -69,27 +69,49 @@ export class WeekRepository extends Repository<week> {
 
     return {
       message: '업데이트 성공',
-      data: await this.findOneBy({semester_id})
-    }
-
+      data: await this.findOneBy({ semester_id }),
+    };
   }
 
   async getWeek(getWeekDto: GetWeekDto) {
-    let { date } = getWeekDto;
-    if (date === null) {
-      // 1. 현재 시간(Locale)
-      const curr = new Date();
-      console.log('현재시간(Locale) : ' + curr + '<br>'); // 현재시간(Locale) : Tue May 31 2022 09:00:30
+    const { date } = getWeekDto;
+    const weeks = await this.find();
 
-      // 2. UTC 시간 계산
-      const utc = curr.getTime() + curr.getTimezoneOffset() * 60 * 1000;
-
-      // 3. UTC to KST (UTC + 9시간)
-      const KR_TIME_DIFF = 9 * 60 * 60 * 1000; //한국 시간(KST)은 UTC시간보다 9시간 더 빠르므로 9시간을 밀리초 단위로 변환.
-      date = new Date(utc + KR_TIME_DIFF); //UTC 시간을 한국 시간으로 변환하기 위해 utc 밀리초 값에 9시간을 더함.
+    // console.log('현재 날짜', date);
+    for (const week of weeks) {
+      const {
+        week_1,
+        week_2,
+        week_3,
+        week_4,
+        midterm,
+        week_5,
+        week_6,
+        week_7,
+        week_8,
+      } = week;
+      if (date >= week_1 && date < week_2) {
+        return { week: '1', range: `${week_1} ~ ${week_2}` };
+      } else if (date >= week_2 && date < week_3) {
+        return { week: '2', range: `${week_2} ~ ${week_3}` };
+      } else if (date >= week_3 && date < week_4) {
+        return { week: '3', range: `${week_3} ~ ${week_4}` };
+      } else if (date >= week_4 && date < midterm) {
+        return { week: '4', range: `${week_4} ~ ${midterm}` };
+      } else if (date >= midterm && date < week_5) {
+        return { week: 'midterm', range: `${midterm} ~ ${week_5}` };
+      } else if (date >= week_5 && date < week_6) {
+        return { week: '5', range: `${week_5} ~ ${week_6}` };
+      } else if (date >= week_6 && date < week_7) {
+        return { week: '6', range: `${week_6} ~ ${week_7}` };
+      } else if (date >= week_7 && date < week_8) {
+        return { week: '7', range: `${week_7} ~ ${week_8}` };
+      } else if (
+        date >= week_8 &&
+        date < new Date(week_8.setDate(week_8.getDate() + 7))
+      ) {
+        return { week: '8', range: `${week_8} ~ ${new Date(week_8.setDate(week_8.getDate() + 7))}` };
+      }
     }
-
-    const week = await this.createQueryBuilder('week').getMany();
-    console.log(week);
   }
 }

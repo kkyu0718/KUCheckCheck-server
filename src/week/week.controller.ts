@@ -18,7 +18,7 @@ import { WeekService } from './week.service';
 @UseGuards(RolesGuard)
 export class WeekController {
   constructor(private weekService: WeekService) {}
-  
+
   @UseGuards(JwtAuthGuard)
   // @Roles('MANAGER')
   @Post('/')
@@ -59,8 +59,10 @@ export class WeekController {
   }
 
   @Get('/')
-  getWeek(@Query('date') date) {
-    const getWeekDto: GetWeekDto = date;
+  getWeek() {
+    const date = new Date();
+    // const date = new Date(2022, 4, 19)
+    const getWeekDto: GetWeekDto = { date };
     return this.weekService.getWeek(getWeekDto);
   }
 }
