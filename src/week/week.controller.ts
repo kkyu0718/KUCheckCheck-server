@@ -61,8 +61,8 @@ export class WeekController {
 
   @Get('/')
   getWeek(@Query('date') dateInput) {
-    let date = new Date();
-    return date;
+    // let date = new Date();
+    // return date;
     // if (dateInput !== undefined){
     //   const year = Number(dateInput.slice(0,4));
     //   const month = Number(dateInput.slice(4,6));
@@ -70,10 +70,10 @@ export class WeekController {
     //   console.log(year, month, day)
     //   date = new Date(year, month-1, day);
     // }
-    // date = new Date(2022, 4, 19)
+    // const date = new Date(2022, 4, 19);
+    const date = new Date(dateInput);
     console.log(date);
     const getWeekDto: GetWeekDto = { date };
     return this.weekService.getWeek(getWeekDto);
   }
-
 }

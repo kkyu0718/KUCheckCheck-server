@@ -14,7 +14,7 @@ export class WeekService {
     return this.weekRepository.createWeek(createWeekDto);
   }
 
-  async updateWeek(updateWeekDto: UpdateWeekDto){
+  async updateWeek(updateWeekDto: UpdateWeekDto) {
     return this.weekRepository.updateWeek(updateWeekDto);
   }
 
