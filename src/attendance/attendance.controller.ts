@@ -1,5 +1,4 @@
 import { AttendanceService } from './attendance.service';
-import { JwtStrategy } from './../auth/jwt.strategy';
 import {
   Body,
   Controller,
@@ -16,11 +15,13 @@ import {
   UpdateAttendanceDto,
 } from './dto/attendance.dto';
 import { JwtAuthGuard } from 'src/auth/jwt.guard';
+import { IsMasterGuard } from 'src/auth/is-master.guard';
 
 @UseGuards(JwtAuthGuard)
 @Controller('attendance')
 export class AttendanceController {
   constructor(private attendanceService: AttendanceService) {}
+  @UseGuards(IsMasterGuard)
   @Post('/')
   async createAttendance(@Query('course_id') course_id, @Body() body) {
     const createAttendanceDto: CreateAttendanceDto = {
@@ -38,6 +39,7 @@ export class AttendanceController {
     return this.attendanceService.getAttendance(getAttendanceDto);
   }
 
+  @UseGuards(IsMasterGuard)
   @Put('/')
   async updateAttendance(
     @Query('course_id') course_id,

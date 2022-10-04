@@ -49,8 +49,8 @@ export class member extends BaseEntity {
   instagram_id: string;
 
   @CreateDateColumn({
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP(6)',
+    type: 'timestamp with time zone',
+    default: 'now()',
   })
   created_at: Date;
 

@@ -61,8 +61,13 @@ export class WeekController {
 
   @Get('/')
   getWeek(@Query('date') dateInput) {
-    // let date = new Date();
-    // return date;
+    let date = new Date();
+    // if(dateInput == undefined){
+    //   date = new Date().toLocaleString('en-us', {timezone: 'Asia/Seoul'})
+    // } else{
+    //   date = new Date(dateInput).toLocaleString('en-us', {timeZone: 'Asia/Seoul'});
+    // }
+    return date.toLocaleString('en-US', {timeZone: 'Asia/Seoul'});
     // if (dateInput !== undefined){
     //   const year = Number(dateInput.slice(0,4));
     //   const month = Number(dateInput.slice(4,6));
@@ -71,9 +76,10 @@ export class WeekController {
     //   date = new Date(year, month-1, day);
     // }
     // const date = new Date(2022, 4, 19);
-    const date = new Date(dateInput);
-    console.log(date);
-    const getWeekDto: GetWeekDto = { date };
-    return this.weekService.getWeek(getWeekDto);
+    // const date = new Date(dateInput);
+    // console.log("dateInput", dateInput)
+    // console.log("new Date" , date);
+    // const getWeekDto: GetWeekDto = { date };
+    // return this.weekService.getWeek(getWeekDto);
   }
 }

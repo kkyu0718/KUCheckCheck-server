@@ -37,7 +37,7 @@ export class AttendanceRepository extends Repository<attendance> {
         throw new ConflictException('existing member_id & course_id 조합');
       } else if (error.code == '23503') {
         throw new InternalServerErrorException(
-          '해당 course_id 또는 member_id 가 테이블에 존재하지 않습니다. course 또는 member 등록을 먼저 해주세요',
+          '등록하려는 course_id 또는 member_id 가 테이블에 존재하지 않습니다. course 또는 member 등록을 먼저 해주세요',
         );
       } else {
         throw new InternalServerErrorException(error);
@@ -59,7 +59,7 @@ export class AttendanceRepository extends Repository<attendance> {
     const attendance = await this.createQueryBuilder('attendance')
       .leftJoinAndSelect('attendance.course_id', 'attendance.member_id')
       .where('attendance.course_id = :course_id', { course_id })
-      .where('attendance.member_id = :member_id', { member_id })
+      .andWhere('attendance.member_id = :member_id', { member_id })
       .getOne();
     const attendance_id = attendance['id'];
     await this.update({ id: attendance_id }, body);
