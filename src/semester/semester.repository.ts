@@ -2,6 +2,7 @@ import { ConflictException, Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { CreateSemesterDto } from './dto/semester.dto';
 import { semester } from './semester.entity';
+import { convertTimeZone } from 'src/utils/convertTimeZone';
 
 @Injectable()
 export class SemesterRepository extends Repository<semester> {
@@ -15,12 +16,21 @@ export class SemesterRepository extends Repository<semester> {
 
   async createSemester(createSemesterDto: CreateSemesterDto) {
     try {
+      // let data = '2022-0Asia/Seoul').format('YYYY-MM-DDTHH:mm:ss'));
       const savedData = await this.save(createSemesterDto);
       const { id, created_by } = savedData;
+      const columns = [
+        'register_start',
+        'register_end',
+        'enrollment_start',
+        'enrollment_end',
+        'active_start',
+        'active_end',
+      ];
       await this.update(id, { updated_by: created_by });
-      return this.findOneBy({ id });
+      return convertTimeZone(columns, await this.findOneBy({ id }));
     } catch (error) {
-      if(error.code === '23505'){
+      if (error.code === '23505') {
         throw new ConflictException('해당 학기가 이미 존재합니다');
       }
     }

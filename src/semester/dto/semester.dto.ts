@@ -2,12 +2,12 @@ export class CreateSemesterDto {
   created_by: number;
   semester_year: string;
   semester: string;
-  register_start: Date;
-  register_end: Date;
-  enrollment_start: Date;
-  enrollment_end: Date;
-  active_start: Date;
-  active_end: Date;
+  register_start: string;
+  register_end: string;
+  enrollment_start: string;
+  enrollment_end: string;
+  active_start: string;
+  active_end: string;
 }
 
 export class GetSemesterDto {

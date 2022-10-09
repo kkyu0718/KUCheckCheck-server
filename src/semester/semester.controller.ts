@@ -18,7 +18,7 @@ export class SemesterController {
   constructor(private semesterService: SemesterService) {}
 
   @Post('/')
-  createSemester(@DecodeToken() decodedToken, @Body(ValidationPipe) body) {
+  createSemester(@DecodeToken() decodedToken, @Body() body) {
     const user_id = decodedToken['id'];
     const createSemesterDto: CreateSemesterDto = {
       created_by: user_id,
