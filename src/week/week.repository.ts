@@ -4,7 +4,9 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { SemesterRepository } from 'src/semester/semester.repository';
-import { DataSource, Repository, Timestamp } from 'typeorm';
+import { convertTimeZone } from 'src/utils/convertTimeZone';
+import { isBetweenWeek } from 'src/utils/isBetweenWeek';
+import { DataSource, Repository,  } from 'typeorm';
 import { CreateWeekDto, GetWeekDto, UpdateWeekDto } from './dto/week.dto';
 import { week } from './week.entity';
 
@@ -45,7 +47,18 @@ export class WeekRepository extends Repository<week> {
 
     try {
       const result = await this.save(data);
-      return result;
+      const columns = [
+        'week_1',
+        'week_2',
+        'week_3',
+        'week_4',
+        'midterm',
+        'week_5',
+        'week_6',
+        'week_7',
+        'week_8',
+      ];
+      return convertTimeZone(columns, result);
     } catch (error) {
       console.log(error);
       if (error.code === '23505') {
@@ -66,19 +79,42 @@ export class WeekRepository extends Repository<week> {
     });
     const semester_id = semester_data['id'];
     await this.update(semester_id, body);
+    const columns = [
+      'week_1',
+      'week_2',
+      'week_3',
+      'week_4',
+      'midterm',
+      'week_5',
+      'week_6',
+      'week_7',
+      'week_8',
+    ];
 
     return {
       message: '업데이트 성공',
-      data: await this.findOneBy({ semester_id }),
+      data: convertTimeZone(columns, await this.findOneBy({ semester_id })),
     };
   }
 
   async getWeek(getWeekDto: GetWeekDto) {
     const { date } = getWeekDto;
+    const columns = [
+      'week_1',
+      'week_2',
+      'week_3',
+      'week_4',
+      'midterm',
+      'week_5',
+      'week_6',
+      'week_7',
+      'week_8',
+    ];
+
     const weeks = await this.find();
 
-    // console.log('현재 날짜', date);
     for (const week of weeks) {
+
       const {
         week_1,
         week_2,
@@ -89,35 +125,28 @@ export class WeekRepository extends Repository<week> {
         week_6,
         week_7,
         week_8,
-      } = week;
-      if (date >= week_1 && date < week_2) {
-        return { week: '1', range: `${week_1} ~ ${week_2}`, now: date };
-      } else if (date >= week_2 && date < week_3) {
-        return { week: '2', range: `${week_2} ~ ${week_3}`, now: date };
-      } else if (date >= week_3 && date < week_4) {
-        return { week: '3', range: `${week_3} ~ ${week_4}`, now: date };
-      } else if (date >= week_4 && date < midterm) {
-        return { week: '4', range: `${week_4} ~ ${midterm}`, now: date };
-      } else if (date >= midterm && date < week_5) {
-        return { week: 'midterm', range: `${midterm} ~ ${week_5}`, now: date };
-      } else if (date >= week_5 && date < week_6) {
-        return { week: '5', range: `${week_5} ~ ${week_6}`, now: date };
-      } else if (date >= week_6 && date < week_7) {
-        return { week: '6', range: `${week_6} ~ ${week_7}`, now: date };
-      } else if (date >= week_7 && date < week_8) {
-        return { week: '7', range: `${week_7} ~ ${week_8}`, now: date };
-      } else if (
-        date >= week_8 &&
-        date < new Date(week_8.setDate(week_8.getDate() + 7))
-      ) {
-        return {
-          week: '8',
-          range: `${week_8} ~ ${new Date(
-            week_8.setDate(week_8.getDate() + 7),
-          )}`,
-          now: date,
-        };
-      }
+      }: any = convertTimeZone(columns, week);
+
+      const weekList = { week_1,
+        week_2,
+        week_3,
+        week_4,
+        midterm,
+        week_5,
+        week_6,
+        week_7,
+        week_8,}
+      console.log(weekList)
+      for (let elem in weekList){
+        if (isBetweenWeek(date, weekList[elem]) == true) {
+          return {
+            week: elem
+          }
+        }
+      }   
+    }
+    return {
+      message: "해당 주차는 존재하지 않습니다."
     }
   }
 }
