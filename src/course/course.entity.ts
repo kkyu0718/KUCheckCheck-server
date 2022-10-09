@@ -102,5 +102,6 @@ export class course extends BaseEntity {
   @OneToMany(() => attendance, (attendance) => attendance.course_id, {
     eager: false,
   })
+  @JoinColumn()
   attendance: attendance[];
 }

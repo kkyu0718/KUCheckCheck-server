@@ -25,43 +25,37 @@ export class semester extends BaseEntity {
   @Column({ type: 'varchar', length: 5 }) // FK
   semester: string;
 
-  @CreateDateColumn({
+  @Column({
     type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP(6)',
   })
-  register_start: Date;
+  register_start: string;
 
-  @CreateDateColumn({
+  @Column({
     type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP(6)',
   })
   register_end: Date;
 
-  @CreateDateColumn({
+  @Column({
     type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP(6)',
   })
   enrollment_start: Date;
 
-  @CreateDateColumn({
+  @Column({
     type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP(6)',
   })
   enrollment_end: Date;
 
-  @CreateDateColumn({
+  @Column({
     type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP(6)',
   })
   active_start: Date;
 
-  @CreateDateColumn({
+  @Column({
     type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP(6)',
   })
   active_end: Date;
 
-  @CreateDateColumn({
+  @Column({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
   })

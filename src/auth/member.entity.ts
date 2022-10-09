@@ -8,6 +8,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   OneToMany,
   PrimaryGeneratedColumn,
   Unique,
@@ -49,8 +50,8 @@ export class member extends BaseEntity {
   instagram_id: string;
 
   @CreateDateColumn({
-    type: 'timestamp with time zone',
-    default: 'now()',
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
   })
   created_at: Date;
 
@@ -64,25 +65,30 @@ export class member extends BaseEntity {
   @OneToMany(() => notice, (notice) => notice, {
     eager: false,
   })
+  @JoinColumn()
   notices: notice[];
 
   @OneToMany(() => semester, (semester) => semester, {
     eager: false,
   })
+  @JoinColumn()
   semesters: semester[];
 
   @OneToMany(() => course, (course) => course.member_id, {
     eager: false,
   })
+  @JoinColumn()
   courses: course[];
 
   @OneToMany(() => attendance, (attendance) => attendance.member_id, {
     eager: false,
   })
+  @JoinColumn()
   attendance: attendance[];
 
   @OneToMany(() => week, (week) => week, {
     eager: false,
   })
+  @JoinColumn()
   week: week[];
 }

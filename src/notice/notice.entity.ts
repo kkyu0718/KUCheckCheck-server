@@ -15,7 +15,7 @@ export class notice extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column({ type: 'bit', length: 1, default: 0 })
+  @Column({ type: 'bit', default: false })
   is_show: number;
 
   @Column({ type: 'varchar', length: 254 })
