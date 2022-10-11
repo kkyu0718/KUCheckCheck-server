@@ -12,7 +12,7 @@ import {
 } from 'typeorm';
 
 @Entity()
-@Unique(['semester_id'])
+@Unique(['semesterId'])
 export class week extends BaseEntity {
   @PrimaryGeneratedColumn('increment', { comment: '학기 ID' })
   id: number;
@@ -20,36 +20,37 @@ export class week extends BaseEntity {
   @ManyToOne(() => semester, (semester) => semester, {
     eager: true,
   }) // FK
-  @JoinColumn({ name: 'semester_id' })
-  semester_id: semester['id'];
+  @JoinColumn({ name: 'semesterId' })
+  semesterId: semester['id'];
 
   @CreateDateColumn({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
   })
-  week_1: Date;
+  week1: Date;
 
   @CreateDateColumn({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
   })
-  week_2: Date;
+  week2: Date;
 
   @CreateDateColumn({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
   })
-  week_3: Date;
+  week3: Date;
 
   @CreateDateColumn({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
   })
-  week_4: Date;
+  week4: Date;
 
   @CreateDateColumn({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
+    comment: '중간고사',
   })
   midterm: Date;
 
@@ -57,38 +58,38 @@ export class week extends BaseEntity {
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
   })
-  week_5: Date;
+  week5: Date;
 
   @CreateDateColumn({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
   })
-  week_6: Date;
+  week6: Date;
 
   @CreateDateColumn({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
   })
-  week_7: Date;
+  week7: Date;
 
   @CreateDateColumn({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
   })
-  week_8: Date;
+  week8: Date;
 
   @CreateDateColumn({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
     comment: '생성일',
   })
-  created_at: Date;
+  createdAt: Date;
 
-  @ManyToOne(() => member, (created_by) => created_by.week, {
+  @ManyToOne(() => member, (createdBy) => createdBy.week, {
     eager: true,
   })
-  @JoinColumn({ name: 'created_by' })
-  created_by: member['id'];
+  @JoinColumn({ name: 'createdBy' })
+  createdBy: member['id'];
 
   @UpdateDateColumn({
     type: 'timestamp',
@@ -96,11 +97,11 @@ export class week extends BaseEntity {
     onUpdate: 'CURRENT_TIMESTAMP(6)',
     comment: '수정일',
   })
-  updated_at: Date;
+  updatedAt: Date;
 
-  @ManyToOne(() => member, (updated_by) => updated_by.week, {
+  @ManyToOne(() => member, (updatedBy) => updatedBy.week, {
     eager: true,
   })
-  @JoinColumn({ name: 'updated_by' })
-  updated_by: member['id'];
+  @JoinColumn({ name: 'updatedBy' })
+  updatedBy: member['id'];
 }

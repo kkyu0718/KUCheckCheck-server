@@ -29,16 +29,16 @@ export class WeekController {
   createWeek(
     @DecodeToken() decodedToken,
     @Body() body,
-    @Query('semester_year') semester_year,
+    @Query('semesterYear') semesterYear,
     @Query('semester') semester,
   ) {
     const user = decodedToken['id'];
     const createWeekDto: CreateWeekDto = {
       ...body,
-      semester_year,
+      semesterYear,
       semester,
-      created_by: user,
-      updated_by: user,
+      createdBy: user,
+      updatedBy: user,
     };
     return this.weekService.createWeek(createWeekDto);
   }
@@ -49,15 +49,15 @@ export class WeekController {
   updateWeek(
     @DecodeToken() decodedToken,
     @Body() body,
-    @Query('semester_year') semester_year,
+    @Query('semesterYear') semesterYear,
     @Query('semester') semester,
   ) {
     const user = decodedToken['id'];
     const updateWeekDto: UpdateWeekDto = {
       ...body,
-      semester_year,
+      semesterYear,
       semester,
-      updated_by: user,
+      updatedBy: user,
     };
     return this.weekService.updateWeek(updateWeekDto);
   }

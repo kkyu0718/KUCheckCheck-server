@@ -24,24 +24,24 @@ export class WeekRepository extends Repository<week> {
   }
 
   async createWeek(createWeekDto: CreateWeekDto) {
-    const { semester_year, semester, ...body } = createWeekDto;
-    const semester_data = await this.semesterRepository.findOne({
+    const { semesterYear, semester, ...body } = createWeekDto;
+    const semesterData = await this.semesterRepository.findOne({
       where: {
         semester: semester,
-        semester_year: semester_year,
+        semesterYear: semesterYear,
       },
     });
 
     // 등록되지 않은 학기일 경우 에러 발생
-    if (semester_data === null) {
+    if (semesterData === null) {
       throw new InternalServerErrorException(
-        `학기 ${semester_year}-${semester}가 등록되어 있지 않습니다`,
+        `학기 ${semesterYear}-${semester}가 등록되어 있지 않습니다`,
       );
     }
 
-    const semester_id = semester_data['id'];
+    const semesterId = semesterData['id'];
     const data = {
-      semester_id,
+      semesterId,
       ...body,
     };
 
@@ -70,45 +70,45 @@ export class WeekRepository extends Repository<week> {
   }
 
   async updateWeek(updateWeekDto: UpdateWeekDto) {
-    const { semester_year, semester, ...body } = updateWeekDto;
-    const semester_data = await this.semesterRepository.findOne({
+    const { semesterYear, semester, ...body } = updateWeekDto;
+    const semesterData = await this.semesterRepository.findOne({
       where: {
         semester: semester,
-        semester_year: semester_year,
+        semesterYear: semesterYear,
       },
     });
-    const semester_id = semester_data['id'];
-    await this.update(semester_id, body);
+    const semesterId = semester_data['id'];
+    await this.update(semesterId, body);
     const columns = [
-      'week_1',
-      'week_2',
-      'week_3',
-      'week_4',
+      'week1',
+      'week2',
+      'week3',
+      'week4',
       'midterm',
-      'week_5',
-      'week_6',
-      'week_7',
-      'week_8',
+      'week5',
+      'week6',
+      'week7',
+      'week8',
     ];
 
     return {
       message: '업데이트 성공',
-      data: convertTimeZone(columns, await this.findOneBy({ semester_id })),
+      data: convertTimeZone(columns, await this.findOneBy({ semesterId })),
     };
   }
 
   async getWeek(getWeekDto: GetWeekDto) {
     const { date } = getWeekDto;
     const columns = [
-      'week_1',
-      'week_2',
-      'week_3',
-      'week_4',
+      'week1',
+      'week2',
+      'week3',
+      'week4',
       'midterm',
-      'week_5',
-      'week_6',
-      'week_7',
-      'week_8',
+      'week5',
+      'week6',
+      'week7',
+      'week8',
     ];
 
     const weeks = await this.find();
@@ -116,27 +116,27 @@ export class WeekRepository extends Repository<week> {
     for (const week of weeks) {
 
       const {
-        week_1,
-        week_2,
-        week_3,
-        week_4,
+        week1,
+        week2,
+        week3,
+        week4,
         midterm,
-        week_5,
-        week_6,
-        week_7,
-        week_8,
+        week5,
+        week6,
+        week7,
+        week8,
       }: any = convertTimeZone(columns, week);
 
-      const weekList = { week_1,
-        week_2,
-        week_3,
-        week_4,
+      const weekList = { week1,
+        week2,
+        week3,
+        week4,
         midterm,
-        week_5,
-        week_6,
-        week_7,
-        week_8,}
-      console.log(weekList)
+        week5,
+        week6,
+        week7,
+        week8,}
+
       for (let elem in weekList){
         if (isBetweenWeek(date, weekList[elem]) == true) {
           return {

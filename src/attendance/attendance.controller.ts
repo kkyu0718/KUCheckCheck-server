@@ -23,18 +23,18 @@ export class AttendanceController {
   constructor(private attendanceService: AttendanceService) {}
   @UseGuards(IsMasterGuard)
   @Post('/')
-  async createAttendance(@Query('course_id') course_id, @Body() body) {
+  async createAttendance(@Query('courseId') courseId, @Body() body) {
     const createAttendanceDto: CreateAttendanceDto = {
-      course_id: course_id,
+      courseId: courseId,
       ...body,
     };
     return this.attendanceService.createAttendance(createAttendanceDto);
   }
 
   @Get('/')
-  async getAttendance(@Query('course_id', ParseIntPipe) course_id) {
+  async getAttendance(@Query('courseId', ParseIntPipe) courseId) {
     const getAttendanceDto: GetAttendanceDto = {
-      course_id: course_id,
+      courseId: courseId,
     };
     return this.attendanceService.getAttendance(getAttendanceDto);
   }
@@ -42,13 +42,13 @@ export class AttendanceController {
   @UseGuards(IsMasterGuard)
   @Put('/')
   async updateAttendance(
-    @Query('course_id') course_id,
-    @Query('member_id') member_id,
+    @Query('courseId') courseId,
+    @Query('memberId') memberId,
     @Body() body,
   ) {
     const updateAttendanceDto: UpdateAttendanceDto = {
-      member_id,
-      course_id,
+      memberId,
+      courseId,
       ...body,
     };
     return this.attendanceService.updateAttendance(updateAttendanceDto);

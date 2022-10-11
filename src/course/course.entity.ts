@@ -18,17 +18,17 @@ export class course extends BaseEntity {
   @PrimaryGeneratedColumn('increment', { comment: '코스 ID' })
   id: number;
 
-  @ManyToOne(() => member, (member_id) => member_id.courses, {
+  @ManyToOne(() => member, (memberId) => memberId.courses, {
     eager: true,
   }) // FK
-  @JoinColumn({ name: 'member_id' })
-  member_id: member['id'];
+  @JoinColumn({ name: 'memberId' })
+  memberId: member['id'];
 
   @ManyToOne(() => semester, (semester) => semester, {
     eager: true,
   }) // FK
-  @JoinColumn({ name: 'semester_id' })
-  semester_id: semester['id'];
+  @JoinColumn({ name: 'semesterId' })
+  semesterId: semester['id'];
 
   @Column({ type: 'int', comment: '활동 타입' })
   type: number;
@@ -37,7 +37,7 @@ export class course extends BaseEntity {
   difficulty: string;
 
   @Column({ type: 'int', comment: '투자 시간' })
-  require_time: number;
+  requireTime: number;
 
   @Column({ type: 'varchar', length: 50, comment: '활동 제목' })
   title: string;
@@ -59,10 +59,10 @@ export class course extends BaseEntity {
   goal: string;
 
   @Column({ type: 'varchar', length: 80, comment: '진행 요일', nullable: true })
-  progress_date: string;
+  progressDate: string;
 
   @Column({ type: 'int', comment: '최대 인원', nullable: true })
-  max_number: number;
+  maxNumber: number;
 
   @Column({
     type: 'varchar',
@@ -79,7 +79,7 @@ export class course extends BaseEntity {
   language: string | object;
 
   @Column({ type: 'json', comment: '세부기술 스택', nullable: true })
-  detail_stack: object;
+  detailStack: object;
 
   @Column({ type: 'json', comment: '커리큘럼', nullable: true })
   curriculum: object;
@@ -89,7 +89,7 @@ export class course extends BaseEntity {
     default: () => 'CURRENT_TIMESTAMP(6)',
     comment: '생성일',
   })
-  created_at: Date;
+  createdAt: Date;
 
   @UpdateDateColumn({
     type: 'timestamp',
@@ -97,9 +97,9 @@ export class course extends BaseEntity {
     onUpdate: 'CURRENT_TIMESTAMP(6)',
     comment: '수정일',
   })
-  updated_at: Date;
+  updatedAt: Date;
 
-  @OneToMany(() => attendance, (attendance) => attendance.course_id, {
+  @OneToMany(() => attendance, (attendance) => attendance.courseId, {
     eager: false,
   })
   @JoinColumn()

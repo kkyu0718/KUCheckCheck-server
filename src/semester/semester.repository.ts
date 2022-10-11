@@ -16,7 +16,7 @@ export class SemesterRepository extends Repository<semester> {
 
   async createSemester(createSemesterDto: CreateSemesterDto) {
     try {
-      // let data = '2022-0Asia/Seoul').format('YYYY-MM-DDTHH:mm:ss'));
+
       const savedData = await this.save(createSemesterDto);
       const { id, created_by } = savedData;
       const columns = [

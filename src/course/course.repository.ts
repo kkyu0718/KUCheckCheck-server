@@ -18,20 +18,20 @@ export class CourseRepository extends Repository<course> {
   }
 
   async createCourse(createCourseDto: CreateCourseDto) {
-    const { semester_year, semester, ...body } = createCourseDto;
-    const semester_data = await this.semesterRepository.findOneBy({
-      semester_year,
+    const { semesterYear, semester, ...body } = createCourseDto;
+    const semesterData = await this.semesterRepository.findOneBy({
+      semesterYear,
       semester,
     });
 
     // 학기 등록이 안 되어 있을 경우 에러 발생
-    if (semester_data === null) {
+    if (semesterData === null) {
       throw new InternalServerErrorException('학기 등록을 먼저 해주세요');
     }
 
-    const semester_id = semester_data['id'];
+    const semesterId = semesterData['id'];
     const data = {
-      semester_id,
+      semesterId,
       ...body,
     };
     const result = await this.save(data);
@@ -39,11 +39,11 @@ export class CourseRepository extends Repository<course> {
   }
 
   async updateCourse(updateCourseDto: UpdateCourseDto) {
-    const { course_id, ...body } = updateCourseDto;
-    await this.update(course_id, body);
+    const { courseId, ...body } = updateCourseDto;
+    await this.update(courseId, body);
     return {
       message: '업데이트 성공',
-      data: await this.findOneBy({ id: course_id }),
+      data: await this.findOneBy({ id: courseId }),
     };
   }
 }

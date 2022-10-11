@@ -1,17 +1,17 @@
 export class CreateAttendanceDto {
-  member_id: number;
-  course_id: number;
-  is_master: number;
+  memberId: number;
+  courseId: number;
+  isMaster: number;
   attendance: object;
 }
 
 export class GetAttendanceDto {
-  course_id: number;
+  courseId: number;
 }
 
 export class UpdateAttendanceDto {
-  member_id: number;
-  course_id: number;
-  is_master: number;
+  memberId: number;
+  courseId: number;
+  isMaster: number;
   attendance: object;
 }

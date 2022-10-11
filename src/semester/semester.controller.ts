@@ -19,9 +19,9 @@ export class SemesterController {
 
   @Post('/')
   createSemester(@DecodeToken() decodedToken, @Body() body) {
-    const user_id = decodedToken['id'];
+    const userId = decodedToken['id'];
     const createSemesterDto: CreateSemesterDto = {
-      created_by: user_id,
+      createdBy: userId,
       ...body,
     };
     return this.semesterService.createSemester(createSemesterDto);

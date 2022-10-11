@@ -14,73 +14,86 @@ import {
 } from 'typeorm';
 
 @Entity()
-@Unique(['semester_year', 'semester'])
+@Unique(['semesterYear', 'semester'])
 export class semester extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column({ type: 'varchar', length: 30 }) // FK
-  semester_year: string;
+  @Column({ type: 'varchar', length: 30, comment: '학기 연도' }) // FK
+  semesterYear: string;
 
-  @Column({ type: 'varchar', length: 5 }) // FK
+  @Column({ type: 'varchar', length: 5, comment: '학기' }) // FK
   semester: string;
 
   @Column({
     type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+    comment: '세션 등록 시작일',
   })
-  register_start: string;
-
-  @Column({
-    type: 'timestamp',
-  })
-  register_end: Date;
-
-  @Column({
-    type: 'timestamp',
-  })
-  enrollment_start: Date;
-
-  @Column({
-    type: 'timestamp',
-  })
-  enrollment_end: Date;
-
-  @Column({
-    type: 'timestamp',
-  })
-  active_start: Date;
-
-  @Column({
-    type: 'timestamp',
-  })
-  active_end: Date;
+  registerStart: string;
 
   @Column({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
+    comment: '세션 등록 종료일',
   })
-  created_at: Date;
+  registerEnd: Date;
 
-  @ManyToOne(() => member, (created_by) => created_by.semesters, {
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+    comment: '수강 신청 시작일',
+  })
+  enrollmentStart: Date;
+
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+    comment: '수강 신청 종료일',
+  })
+  enrollmentEnd: Date;
+
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+    comment: '활동 시작일',
+  })
+  activeStart: Date;
+
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+    comment: '활동 종료일',
+  })
+  activeEnd: Date;
+
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+    comment: '생성일',
+  })
+  createdAt: Date;
+
+  @ManyToOne(() => member, (createdBy) => createdBy.semesters, {
     eager: true,
   })
-  @JoinColumn({ name: 'created_by' })
-  created_by: member['id'];
+  @JoinColumn({ name: 'createdBy' })
+  createdBy: member['id'];
 
   @UpdateDateColumn({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
     onUpdate: 'CURRENT_TIMESTAMP(6)',
   })
-  updated_at: Date;
+  updatedAt: Date;
 
-  @ManyToOne(() => member, (updated_by) => updated_by.notices, {
+  @ManyToOne(() => member, (updatedBy) => updatedBy.notices, {
     eager: true,
   })
-  @JoinColumn({ name: 'updated_by' })
-  updated_by: member['id'];
+  @JoinColumn({ name: 'updatedBy' })
+  updatedBy: member['id'];
 
-  @OneToMany(() => course, (course) => course.semester_id, {
+  @OneToMany(() => course, (course) => course.semesterId, {
     eager: false,
   })
   courses: course[];

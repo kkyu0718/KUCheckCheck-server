@@ -34,7 +34,7 @@ export class AttendanceRepository extends Repository<attendance> {
       return result;
     } catch (error) {
       if (error.code == '23505') {
-        throw new ConflictException('existing member_id & course_id 조합');
+        throw new ConflictException('existing member_id & courseId 조합');
       } else if (error.code == '23503') {
         throw new InternalServerErrorException(
           '등록하려는 course_id 또는 member_id 가 테이블에 존재하지 않습니다. course 또는 member 등록을 먼저 해주세요',
@@ -46,26 +46,26 @@ export class AttendanceRepository extends Repository<attendance> {
   }
 
   async getAttendance(getAttendanceDto: GetAttendanceDto): Promise<any> {
-    const { course_id } = getAttendanceDto;
+    const { courseId } = getAttendanceDto;
     const result = this.createQueryBuilder('attendance')
-      .leftJoinAndSelect('attendance.course_id', 'course_id')
-      .where('attendance.course_id = :course_id', { course_id })
+      .leftJoinAndSelect('attendance.courseId', 'courseId')
+      .where('attendance.courseId = :courseId', { courseId })
       .getMany();
     return result;
   }
 
   async updateAttendance(updateAttendanceDto: UpdateAttendanceDto) {
-    const { member_id, course_id, ...body } = updateAttendanceDto;
+    const { memberId, courseId, ...body } = updateAttendanceDto;
     const attendance = await this.createQueryBuilder('attendance')
-      .leftJoinAndSelect('attendance.course_id', 'attendance.member_id')
-      .where('attendance.course_id = :course_id', { course_id })
-      .andWhere('attendance.member_id = :member_id', { member_id })
+      .leftJoinAndSelect('attendance.courseId', 'attendance.memberId')
+      .where('attendance.courseId = :courseId', { courseId })
+      .andWhere('attendance.memberId = :memberId', { memberId })
       .getOne();
-    const attendance_id = attendance['id'];
-    await this.update({ id: attendance_id }, body);
+    const attendanceId = attendance['id'];
+    await this.update({ id: attendanceId }, body);
     return {
       message: '업데이트 성공',
-      data: await this.findOneBy({ id: attendance_id }),
+      data: await this.findOneBy({ id: attendanceId }),
     };
   }
 }
