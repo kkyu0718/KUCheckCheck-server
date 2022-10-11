@@ -27,39 +27,59 @@ export class member extends BaseEntity {
   @Column({ type: 'varchar', length: 254 })
   password: string;
 
-  @Column({ type: 'varchar', length: 80 })
+  @Column({ type: 'varchar', length: 80, comment: '유저명' })
   name: string;
 
-  @Column({ type: 'varchar', length: 50, default: UserRole.MEMBER })
+  @Column({
+    type: 'varchar',
+    length: 50,
+    default: UserRole.MEMBER,
+    comment: '유저 타입',
+  })
   role: UserRole;
 
-  @Column({ type: 'varchar', length: 10, nullable: true })
+  @Column({ type: 'varchar', length: 10, nullable: true, comment: '이모지' })
   emoji: string;
 
-  @Column({ type: 'varchar', length: 254 })
+  @Column({ type: 'varchar', length: 254, comment: '한줄 소개글' })
   comment: string;
 
-  @Column({ type: 'varchar', length: 254, nullable: true })
-  detail_comment: string;
+  @Column({
+    type: 'varchar',
+    length: 254,
+    nullable: true,
+    comment: '정식 소개글',
+  })
+  detailComment: string;
 
-  @Column({ type: 'varchar', length: 80, nullable: true })
-  github_id: string;
+  @Column({
+    type: 'varchar',
+    length: 80,
+    nullable: true,
+    comment: '깃허브 계정',
+  })
+  githubId: string;
 
-  @Column({ type: 'varchar', length: 80, nullable: true })
-  instagram_id: string;
+  @Column({
+    type: 'varchar',
+    length: 80,
+    nullable: true,
+    comment: '인스타그램 계정',
+  })
+  instagramId: string;
 
   @CreateDateColumn({
     type: 'timestamp with time zone',
     default: 'now()',
   })
-  created_at: Date;
+  createdAt: Date;
 
   @UpdateDateColumn({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
     onUpdate: 'CURRENT_TIMESTAMP(6)',
   })
-  updated_at: Date;
+  updatedAt: Date;
 
   @OneToMany(() => notice, (notice) => notice, {
     eager: false,
@@ -71,12 +91,12 @@ export class member extends BaseEntity {
   })
   semesters: semester[];
 
-  @OneToMany(() => course, (course) => course.member_id, {
+  @OneToMany(() => course, (course) => course.memberId, {
     eager: false,
   })
   courses: course[];
 
-  @OneToMany(() => attendance, (attendance) => attendance.member_id, {
+  @OneToMany(() => attendance, (attendance) => attendance.memberId, {
     eager: false,
   })
   attendance: attendance[];

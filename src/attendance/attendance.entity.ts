@@ -13,25 +13,25 @@ import {
 } from 'typeorm';
 
 @Entity()
-@Unique(['member_id', 'course_id'])
+@Unique(['memberId', 'courseId'])
 export class attendance extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @ManyToOne(() => member, (member_id) => member_id.attendance, {
+  @ManyToOne(() => member, (memberId) => memberId.attendance, {
     eager: true,
   }) // FK
-  @JoinColumn({ name: 'member_id' })
-  member_id: member['id'];
+  @JoinColumn({ name: 'memberId' })
+  memberId: member['id'];
 
-  @ManyToOne(() => course, (course_id) => course_id.attendance, {
+  @ManyToOne(() => course, (courseId) => courseId.attendance, {
     eager: true,
   }) // FK
-  @JoinColumn({ name: 'course_id' })
-  course_id: course['id'];
+  @JoinColumn({ name: 'courseId' })
+  courseId: course['id'];
 
   @Column({ type: 'bit', default: 0, comment: '출석 담당자' })
-  is_master: number;
+  isMaster: number;
 
   @Column({ type: 'json', default: null, comment: '출석 체크 리스트' })
   attendance: object;
@@ -41,7 +41,7 @@ export class attendance extends BaseEntity {
     default: () => 'CURRENT_TIMESTAMP(6)',
     comment: '생성일',
   })
-  created_at: Date;
+  createdAt: Date;
 
   @UpdateDateColumn({
     type: 'timestamp',
@@ -49,5 +49,5 @@ export class attendance extends BaseEntity {
     onUpdate: 'CURRENT_TIMESTAMP(6)',
     comment: '수정일',
   })
-  updated_at: Date;
+  updatedAt: Date;
 }

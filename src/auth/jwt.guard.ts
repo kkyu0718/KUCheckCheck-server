@@ -46,7 +46,10 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
           throw new HttpException('토큰이 만료되었습니다.', 401);
 
         default:
-          throw new HttpException('서버 오류입니다. 오류 발생 위치 jwt.guard.ts', 500);
+          throw new HttpException(
+            '서버 오류입니다. 오류 발생 위치 jwt.guard.ts',
+            500,
+          );
       }
     }
   }

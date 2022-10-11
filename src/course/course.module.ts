@@ -11,6 +11,6 @@ import { CourseService } from './course.service';
 @Module({
   imports: [TypeOrmModule.forFeature([course]), AuthModule],
   controllers: [CourseController],
-providers: [CourseService, CourseRepository, JwtService, SemesterRepository],
+  providers: [CourseService, CourseRepository, JwtService, SemesterRepository],
 })
 export class CourseModule {}

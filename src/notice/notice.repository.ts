@@ -15,18 +15,18 @@ export class NoticeRepository extends Repository<notice> {
 
   async createNotice(createNoticeDto: CreateNoticeDto): Promise<any> {
     const savedData = await this.save(createNoticeDto);
-    const { id, created_by } = savedData;
-    await this.update(id, { updated_by: created_by }); // updated_by -> created_by 와 동일하게 저장
+    const { id, createdBy } = savedData;
+    await this.update(id, { updatedBy: createdBy }); // updatedBy -> createdBy 와 동일하게 저장
 
     return this.findOneBy({ id });
   }
 
   async updateNotice(updateNoticeDto: UpdateNoticeDto) {
-    const { notice_id, ...body } = updateNoticeDto;
-    await this.update(notice_id, body);
+    const { noticeId, ...body } = updateNoticeDto;
+    await this.update(noticeId, body);
     return {
       message: '업데이트 성공',
-      data: await this.findOneBy({ id: notice_id }),
+      data: await this.findOneBy({ id: noticeId }),
     };
   }
 }

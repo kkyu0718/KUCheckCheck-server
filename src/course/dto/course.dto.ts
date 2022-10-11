@@ -1,34 +1,34 @@
 export class CreateCourseDto {
-  member_id: number;
-  semester_year: string;
+  memberId: number;
+  semesterYear: string;
   semester: string;
   type: number;
   difficulty: string;
-  require_time: number;
+  requireTime: number;
   title: string;
   language: object;
-  detail_stack?: object;
+  detailStack?: object;
   introduction?: string;
   goal?: string;
-  progress_date?: string;
-  max_number?: number;
+  progressDate?: string;
+  maxNumber?: number;
   place?: string;
   notice?: string;
   curriculum?: object;
 }
 
 export class UpdateCourseDto {
-  course_id: number;
+  courseId: number;
   type: number;
   difficulty: string;
-  require_time: number;
+  requireTime: number;
   title: string;
   language: object;
-  detail_stack?: object;
+  detailStack?: object;
   introduction?: string;
   goal?: string;
-  progress_date?: string;
-  max_number?: number;
+  progressDate?: string;
+  maxNumber?: number;
   place?: string;
   notice?: string;
   curriculum?: object;

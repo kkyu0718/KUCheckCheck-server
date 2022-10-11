@@ -11,9 +11,9 @@ export class SignUpInfoDto {
   comment: string;
 
   // 선택사항
-  detail_comment?: string;
-  github_id?: string;
-  instagram_id?: string;
+  detailComment?: string;
+  githubId?: string;
+  instagramId?: string;
 }
 
 export class SignInInfoDto {
@@ -34,7 +34,7 @@ export class UpdateUserInfoDto {
   emoji?: string;
   comment: string;
 
-  detail_comment?: string;
-  github_id?: string;
-  instagram_id?: string;
+  detailComment?: string;
+  githubId?: string;
+  instagramId?: string;
 }

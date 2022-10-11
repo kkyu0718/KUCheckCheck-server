@@ -1,12 +1,12 @@
 export class CreateNoticeDto {
-  created_by: number;
+  createdBy: number;
   title: string;
   content: string;
 }
 
 export class UpdateNoticeDto {
-  notice_id: number;
-  updated_by: number;
+  noticeId: number;
+  updatedBy: number;
   title: string;
   content: string;
 }

@@ -22,24 +22,24 @@ export class WeekRepository extends Repository<week> {
   }
 
   async createWeek(createWeekDto: CreateWeekDto) {
-    const { semester_year, semester, ...body } = createWeekDto;
-    const semester_data = await this.semesterRepository.findOne({
+    const { semesterYear, semester, ...body } = createWeekDto;
+    const semesterData = await this.semesterRepository.findOne({
       where: {
         semester: semester,
-        semester_year: semester_year,
+        semesterYear: semesterYear,
       },
     });
 
     // 등록되지 않은 학기일 경우 에러 발생
-    if (semester_data === null) {
+    if (semesterData === null) {
       throw new InternalServerErrorException(
-        `학기 ${semester_year}-${semester}가 등록되어 있지 않습니다`,
+        `학기 ${semesterYear}-${semester}가 등록되어 있지 않습니다`,
       );
     }
 
-    const semester_id = semester_data['id'];
+    const semesterId = semesterData['id'];
     const data = {
-      semester_id,
+      semesterId,
       ...body,
     };
 
@@ -57,19 +57,19 @@ export class WeekRepository extends Repository<week> {
   }
 
   async updateWeek(updateWeekDto: UpdateWeekDto) {
-    const { semester_year, semester, ...body } = updateWeekDto;
-    const semester_data = await this.semesterRepository.findOne({
+    const { semesterYear, semester, ...body } = updateWeekDto;
+    const semesterData = await this.semesterRepository.findOne({
       where: {
         semester: semester,
-        semester_year: semester_year,
+        semesterYear: semesterYear,
       },
     });
-    const semester_id = semester_data['id'];
-    await this.update(semester_id, body);
+    const semesterId = semesterData['id'];
+    await this.update(semesterId, body);
 
     return {
       message: '업데이트 성공',
-      data: await this.findOneBy({ semester_id }),
+      data: await this.findOneBy({ semesterId }),
     };
   }
 
@@ -80,41 +80,39 @@ export class WeekRepository extends Repository<week> {
     // console.log('현재 날짜', date);
     for (const week of weeks) {
       const {
-        week_1,
-        week_2,
-        week_3,
-        week_4,
+        week1,
+        week2,
+        week3,
+        week4,
         midterm,
-        week_5,
-        week_6,
-        week_7,
-        week_8,
+        week5,
+        week6,
+        week7,
+        week8,
       } = week;
-      if (date >= week_1 && date < week_2) {
-        return { week: '1', range: `${week_1} ~ ${week_2}`, now: date };
-      } else if (date >= week_2 && date < week_3) {
-        return { week: '2', range: `${week_2} ~ ${week_3}`, now: date };
-      } else if (date >= week_3 && date < week_4) {
-        return { week: '3', range: `${week_3} ~ ${week_4}`, now: date };
-      } else if (date >= week_4 && date < midterm) {
-        return { week: '4', range: `${week_4} ~ ${midterm}`, now: date };
-      } else if (date >= midterm && date < week_5) {
-        return { week: 'midterm', range: `${midterm} ~ ${week_5}`, now: date };
-      } else if (date >= week_5 && date < week_6) {
-        return { week: '5', range: `${week_5} ~ ${week_6}`, now: date };
-      } else if (date >= week_6 && date < week_7) {
-        return { week: '6', range: `${week_6} ~ ${week_7}`, now: date };
-      } else if (date >= week_7 && date < week_8) {
-        return { week: '7', range: `${week_7} ~ ${week_8}`, now: date };
+      if (date >= week1 && date < week2) {
+        return { week: '1', range: `${week1} ~ ${week2}`, now: date };
+      } else if (date >= week2 && date < week3) {
+        return { week: '2', range: `${week2} ~ ${week3}`, now: date };
+      } else if (date >= week3 && date < week4) {
+        return { week: '3', range: `${week3} ~ ${week4}`, now: date };
+      } else if (date >= week4 && date < midterm) {
+        return { week: '4', range: `${week4} ~ ${midterm}`, now: date };
+      } else if (date >= midterm && date < week5) {
+        return { week: 'midterm', range: `${midterm} ~ ${week5}`, now: date };
+      } else if (date >= week5 && date < week6) {
+        return { week: '5', range: `${week5} ~ ${week6}`, now: date };
+      } else if (date >= week6 && date < week7) {
+        return { week: '6', range: `${week6} ~ ${week7}`, now: date };
+      } else if (date >= week7 && date < week8) {
+        return { week: '7', range: `${week7} ~ ${week8}`, now: date };
       } else if (
-        date >= week_8 &&
-        date < new Date(week_8.setDate(week_8.getDate() + 7))
+        date >= week8 &&
+        date < new Date(week8.setDate(week8.getDate() + 7))
       ) {
         return {
           week: '8',
-          range: `${week_8} ~ ${new Date(
-            week_8.setDate(week_8.getDate() + 7),
-          )}`,
+          range: `${week8} ~ ${new Date(week8.setDate(week8.getDate() + 7))}`,
           now: date,
         };
       }

@@ -26,16 +26,16 @@ export class WeekController {
   createWeek(
     @DecodeToken() decodedToken,
     @Body() body,
-    @Query('semester_year') semester_year,
+    @Query('semesterYear') semesterYear,
     @Query('semester') semester,
   ) {
     const user = decodedToken['id'];
     const createWeekDto: CreateWeekDto = {
       ...body,
-      semester_year,
+      semesterYear,
       semester,
-      created_by: user,
-      updated_by: user,
+      createdBy: user,
+      updatedBy: user,
     };
     return this.weekService.createWeek(createWeekDto);
   }
@@ -46,28 +46,28 @@ export class WeekController {
   updateWeek(
     @DecodeToken() decodedToken,
     @Body() body,
-    @Query('semester_year') semester_year,
+    @Query('semesterYear') semesterYear,
     @Query('semester') semester,
   ) {
     const user = decodedToken['id'];
     const updateWeekDto: UpdateWeekDto = {
       ...body,
-      semester_year,
+      semesterYear,
       semester,
-      updated_by: user,
+      updatedBy: user,
     };
     return this.weekService.updateWeek(updateWeekDto);
   }
 
   @Get('/')
   getWeek(@Query('date') dateInput) {
-    let date = new Date();
+    const date = new Date();
     // if(dateInput == undefined){
     //   date = new Date().toLocaleString('en-us', {timezone: 'Asia/Seoul'})
     // } else{
     //   date = new Date(dateInput).toLocaleString('en-us', {timeZone: 'Asia/Seoul'});
     // }
-    return date.toLocaleString('en-US', {timeZone: 'Asia/Seoul'});
+    return date.toLocaleString('en-US', { timeZone: 'Asia/Seoul' });
     // if (dateInput !== undefined){
     //   const year = Number(dateInput.slice(0,4));
     //   const month = Number(dateInput.slice(4,6));

@@ -20,11 +20,11 @@ export class CourseController {
 
   @Post('/')
   createCourse(@DecodeToken() decodedToken, @Body() body, @Query() params) {
-    const { semester_year, semester } = params;
-    const user_id = decodedToken['id'];
+    const { semesterYear, semester } = params;
+    const userId = decodedToken['id'];
     const createCourseDto: CreateCourseDto = {
-      member_id: user_id,
-      semester_year,
+      memberId: userId,
+      semesterYear,
       semester,
       ...body,
     };
@@ -34,7 +34,7 @@ export class CourseController {
   @Put('/:id')
   updateCourse(@Param('id', ParseIntPipe) id: number, @Body() body) {
     const updateCourseDto: UpdateCourseDto = {
-      course_id: id,
+      courseId: id,
       ...body,
     };
     return this.courseService.updateCourse(updateCourseDto);

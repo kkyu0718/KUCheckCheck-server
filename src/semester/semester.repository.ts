@@ -16,11 +16,11 @@ export class SemesterRepository extends Repository<semester> {
   async createSemester(createSemesterDto: CreateSemesterDto) {
     try {
       const savedData = await this.save(createSemesterDto);
-      const { id, created_by } = savedData;
-      await this.update(id, { updated_by: created_by });
+      const { id, createdBy } = savedData;
+      await this.update(id, { updatedBy: createdBy });
       return this.findOneBy({ id });
     } catch (error) {
-      if(error.code === '23505'){
+      if (error.code === '23505') {
         throw new ConflictException('해당 학기가 이미 존재합니다');
       }
     }

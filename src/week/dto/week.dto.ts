@@ -1,34 +1,34 @@
 export class CreateWeekDto {
-  week_1: Date;
-  week_2: Date;
-  week_3: Date;
-  week_4: Date;
+  week1: Date;
+  week2: Date;
+  week3: Date;
+  week4: Date;
   midterm: Date;
-  week_5: Date;
-  week_6: Date;
-  week_7: Date;
-  week_8: Date;
-  semester_year: string;
+  week5: Date;
+  week6: Date;
+  week7: Date;
+  week8: Date;
+  semesterYear: string;
   semester: string;
-  created_by: number;
-  updated_by: number;
+  createdBy: number;
+  updatedBy: number;
 }
 
 export class UpdateWeekDto {
-  week_1: Date;
-  week_2: Date;
-  week_3: Date;
-  week_4: Date;
+  week1: Date;
+  week2: Date;
+  week3: Date;
+  week4: Date;
   midterm: Date;
-  week_5: Date;
-  week_6: Date;
-  week_7: Date;
-  week_8: Date;
-  semester_year: string;
+  week5: Date;
+  week6: Date;
+  week7: Date;
+  week8: Date;
+  semesterYear: string;
   semester: string;
-  updated_by: number;
+  updatedBy: number;
 }
 
 export class GetWeekDto {
-    date: Date;
+  date: Date;
 }

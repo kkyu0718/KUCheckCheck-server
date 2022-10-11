@@ -27,34 +27,34 @@ export class IsMasterGuard extends AuthGuard('is-master') {
     if (authorization === undefined) {
       throw new HttpException('Token 전송 안됨', HttpStatus.UNAUTHORIZED);
     }
-    const { course_id } = request.query;
+    const { courseId } = request.query;
     const token = authorization.replace('Bearer ', '');
-    return this.validateToken(token, course_id);
+    return this.validateToken(token, courseId);
   }
 
   // token의 id를 통해 db에 접근하여 is_master인지 확인
-  async validateToken(token: string, course_id: number) {
+  async validateToken(token: string, courseId: number) {
     const dbConfig = config.get('jwt');
     const secretKey = dbConfig.secret;
 
     try {
       const member = this.jwtService.decode(token, secretKey);
-      const member_id = member['id'];
+      const memberId = member['id'];
       const attendance = await this.attendanceRepository
         .createQueryBuilder('attendance')
-        .leftJoinAndSelect('attendance.course_id', 'course_id')
-        .leftJoinAndSelect('attendance.member_id', 'member_id')
-        .where('attendance.member_id = :member_id', { member_id: member_id })
-        .andWhere('attendance.course_id = :course_id', { course_id: course_id })
+        .leftJoinAndSelect('attendance.courseId', 'courseId')
+        .leftJoinAndSelect('attendance.memberId', 'memberId')
+        .where('attendance.memberId = :memberId', { memberId: memberId })
+        .andWhere('attendance.courseId = :courseId', { courseId: courseId })
         .getOneOrFail();
 
-      const is_master = attendance['is_master'];
+      const isMaster = attendance['isMaster'];
 
-      if (is_master == 0) {
-        console.log(`member_id ${member_id} 는 master가 아닙니다`);
+      if (isMaster == 0) {
+        console.log(`memberId ${memberId} 는 master가 아닙니다`);
         return false;
       } else {
-        console.log(`member_id ${member_id} 는 master가 맞습니다`);
+        console.log(`memberId ${memberId} 는 master가 맞습니다`);
         return true;
       }
     } catch (e) {
