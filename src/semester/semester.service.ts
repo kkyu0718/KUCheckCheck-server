@@ -9,16 +9,15 @@ export class SemesterService {
 
   async createSemester(createSemesterDto: CreateSemesterDto) {
     return await this.semesterRepository.createSemester(createSemesterDto);
-  }
-
+    }
   async getSemester(getSemesterDto: GetSemesterDto) {
     const columns = [
-      'register_start',
-      'register_end',
-      'enrollment_start',
-      'enrollment_end',
-      'active_start',
-      'active_end',
+      'registerStart',
+      'registerEnd',
+      'enrollmentStart',
+      'enrollmentEnd',
+      'activeStart',
+      'activeEnd',
     ];
     return convertTimeZone(
       columns,

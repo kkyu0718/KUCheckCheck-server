@@ -30,7 +30,7 @@ export class semester extends BaseEntity {
     default: () => 'CURRENT_TIMESTAMP(6)',
     comment: '세션 등록 시작일',
   })
-  registerStart: string;
+  registerStart: Date;
 
   @Column({
     type: 'timestamp',

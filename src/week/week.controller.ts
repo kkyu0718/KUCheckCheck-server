@@ -77,8 +77,6 @@ export class WeekController {
       date,
     };
 
-    console.log(getWeekDto);
-
     return this.weekService.getWeek(getWeekDto);
   }
 }

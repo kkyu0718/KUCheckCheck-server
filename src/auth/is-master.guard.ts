@@ -62,13 +62,13 @@ export class IsMasterGuard extends AuthGuard('is-master') {
       switch (e.message) {
         // 토큰에 대한 오류를 판단합니다.
         case 'secret or public key must be provided':
-          throw new HttpException('시크릿 키가 주어지지 않았습니다.', 401);
+          throw new HttpException('시크릿 키가 주어지지 않았습니다. 오류 발생 위치 is-master.guard.ts', 401);
         case 'jwt expired':
-          throw new HttpException('토큰이 만료되었습니다.', 401);
+          throw new HttpException('토큰이 만료되었습니다. 오류 발생 위치 is-master.guard.ts', 401);
         case 'Could not find any entity of type "attendance" matching: [object Object]':
           throw new HttpException(
-            '접근하는 유저가 course에 등록되어 있지 않습니다',
-            403,
+            '접근하는 유저가 course에 등록되어 있지 않습니다. 오류 발생 위치 is-master.guard.ts',
+            500,
           );
         default:
           throw new HttpException(

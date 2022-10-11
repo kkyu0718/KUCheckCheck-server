@@ -21,7 +21,7 @@ import { IsMasterGuard } from 'src/auth/is-master.guard';
 @Controller('attendance')
 export class AttendanceController {
   constructor(private attendanceService: AttendanceService) {}
-  @UseGuards(IsMasterGuard)
+  // @UseGuards(IsMasterGuard)
   @Post('/')
   async createAttendance(@Query('courseId') courseId, @Body() body) {
     const createAttendanceDto: CreateAttendanceDto = {

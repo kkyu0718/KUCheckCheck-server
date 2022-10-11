@@ -6,7 +6,7 @@ import {
 import { SemesterRepository } from 'src/semester/semester.repository';
 import { convertTimeZone } from 'src/utils/convertTimeZone';
 import { isBetweenWeek } from 'src/utils/isBetweenWeek';
-import { DataSource, Repository,  } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { CreateWeekDto, GetWeekDto, UpdateWeekDto } from './dto/week.dto';
 import { week } from './week.entity';
 
@@ -48,15 +48,15 @@ export class WeekRepository extends Repository<week> {
     try {
       const result = await this.save(data);
       const columns = [
-        'week_1',
-        'week_2',
-        'week_3',
-        'week_4',
+        'week1',
+        'week2',
+        'week3',
+        'week4',
         'midterm',
-        'week_5',
-        'week_6',
-        'week_7',
-        'week_8',
+        'week5',
+        'week6',
+        'week7',
+        'week8',
       ];
       return convertTimeZone(columns, result);
     } catch (error) {
@@ -77,7 +77,7 @@ export class WeekRepository extends Repository<week> {
         semesterYear: semesterYear,
       },
     });
-    const semesterId = semester_data['id'];
+    const semesterId = semesterData['id'];
     await this.update(semesterId, body);
     const columns = [
       'week1',
@@ -114,7 +114,6 @@ export class WeekRepository extends Repository<week> {
     const weeks = await this.find();
 
     for (const week of weeks) {
-
       const {
         week1,
         week2,
@@ -127,7 +126,8 @@ export class WeekRepository extends Repository<week> {
         week8,
       }: any = convertTimeZone(columns, week);
 
-      const weekList = { week1,
+      const weekList = {
+        week1,
         week2,
         week3,
         week4,
@@ -135,18 +135,19 @@ export class WeekRepository extends Repository<week> {
         week5,
         week6,
         week7,
-        week8,}
+        week8,
+      };
 
-      for (let elem in weekList){
+      for (const elem in weekList) {
         if (isBetweenWeek(date, weekList[elem]) == true) {
           return {
-            week: elem
-          }
+            week: elem,
+          };
         }
-      }   
+      }
     }
     return {
-      message: "해당 주차는 존재하지 않습니다."
-    }
+      message: '해당 주차는 존재하지 않습니다.',
+    };
   }
 }

@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Query,
-  Post,
-  UseGuards,
-  ValidationPipe,
-} from '@nestjs/common';
+import { Body, Controller, Get, Query, Post, UseGuards } from '@nestjs/common';
 import { DecodeToken } from 'src/auth/decode-token.decorator';
 import { JwtStrategy } from 'src/auth/jwt.strategy';
 import { CreateSemesterDto, GetSemesterDto } from './dto/semester.dto';

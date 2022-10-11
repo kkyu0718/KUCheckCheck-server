@@ -18,18 +18,19 @@ export class SemesterRepository extends Repository<semester> {
     try {
 
       const savedData = await this.save(createSemesterDto);
-      const { id, created_by } = savedData;
+      const { id, createdBy } = savedData;
       const columns = [
-        'register_start',
-        'register_end',
-        'enrollment_start',
-        'enrollment_end',
-        'active_start',
-        'active_end',
+        'registerStart',
+        'registerEnd',
+        'enrollmentStart',
+        'enrollmentEnd',
+        'activeStart',
+        'activeEnd',
       ];
-      await this.update(id, { updated_by: created_by });
+      await this.update(id, { updatedBy: createdBy });
       return convertTimeZone(columns, await this.findOneBy({ id }));
     } catch (error) {
+      console.log(error)
       if (error.code === '23505') {
         throw new ConflictException('해당 학기가 이미 존재합니다');
       }
