@@ -1,13 +1,13 @@
 export class CreateWeekDto {
-  week1: string;
-  week2: string;
-  week3: string;
-  week4: string;
-  midterm: string;
-  week5: string;
-  week6: string;
-  week7: string;
-  week8: string;
+  week1: Date;
+  week2: Date;
+  week3: Date;
+  week4: Date;
+  midterm: Date;
+  week5: Date;
+  week6: Date;
+  week7: Date;
+  week8: Date;
   semesterYear: string;
   semester: string;
   createdBy: number;
@@ -15,20 +15,20 @@ export class CreateWeekDto {
 }
 
 export class UpdateWeekDto {
-  week1: string;
-  week2: string;
-  week3: string;
-  week4: string;
-  midterm: string;
-  week5: string;
-  week6: string;
-  week7: string;
-  week8: string;
+  week1: Date;
+  week2: Date;
+  week3: Date;
+  week4: Date;
+  midterm: Date;
+  week5: Date;
+  week6: Date;
+  week7: Date;
+  week8: Date;
   semesterYear: string;
   semester: string;
   updatedBy: number;
 }
 
 export class GetWeekDto {
-  date?: string;
+  date?: Date;
 }

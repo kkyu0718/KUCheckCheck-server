@@ -10,7 +10,6 @@ export class SemesterService {
     return await this.semesterRepository.createSemester(createSemesterDto);
   }
   async getSemester(getSemesterDto: GetSemesterDto) {
-    console.log(new Date());
     return await this.semesterRepository.findOneBy(getSemesterDto);
   }
 }
