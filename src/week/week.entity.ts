@@ -2,6 +2,7 @@ import { member } from 'src/auth/member.entity';
 import { semester } from 'src/semester/semester.entity';
 import {
   BaseEntity,
+  Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
@@ -23,56 +24,56 @@ export class week extends BaseEntity {
   @JoinColumn({ name: 'semesterId' })
   semesterId: semester['id'];
 
-  @CreateDateColumn({
+  @Column({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
   })
   week1: Date;
 
-  @CreateDateColumn({
+  @Column({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
   })
   week2: Date;
 
-  @CreateDateColumn({
+  @Column({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
   })
   week3: Date;
 
-  @CreateDateColumn({
+  @Column({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
   })
   week4: Date;
 
-  @CreateDateColumn({
+  @Column({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
     comment: '중간고사',
   })
   midterm: Date;
 
-  @CreateDateColumn({
+  @Column({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
   })
   week5: Date;
 
-  @CreateDateColumn({
+  @Column({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
   })
   week6: Date;
 
-  @CreateDateColumn({
+  @Column({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
   })
   week7: Date;
 
-  @CreateDateColumn({
+  @Column({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
   })
