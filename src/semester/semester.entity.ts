@@ -67,7 +67,7 @@ export class semester extends BaseEntity {
   })
   activeEnd: Date;
 
-  @Column({
+  @CreateDateColumn({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
     comment: '생성일',

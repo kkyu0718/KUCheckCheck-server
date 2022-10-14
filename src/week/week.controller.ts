@@ -65,12 +65,12 @@ export class WeekController {
   @Get('/')
   getWeek(@Query('date') dateInput) {
     let date;
-    if (dateInput == undefined){
+    if (dateInput == undefined) {
       dayjs.extend(utc);
-      dayjs.extend(timezone)
+      dayjs.extend(timezone);
       date = dayjs.utc().tz('Asia/Seoul').format('YYYY-MM-DD');
-    } else{
-      date = dateInput
+    } else {
+      date = dateInput;
     }
 
     const getWeekDto: GetWeekDto = {
