@@ -33,9 +33,9 @@ export class AttendanceRepository extends Repository<attendance> {
       const result = await this.save(createAttendanceDto);
       return result;
     } catch (error) {
-      if (error.code == '23505') {
+      if (error.errno == '1062') {
         throw new ConflictException('existing member_id & courseId 조합');
-      } else if (error.code == '23503') {
+      } else if (error.errno == '1452') {
         throw new InternalServerErrorException(
           '등록하려는 course_id 또는 member_id 가 테이블에 존재하지 않습니다. course 또는 member 등록을 먼저 해주세요',
         );

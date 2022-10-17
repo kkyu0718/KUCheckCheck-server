@@ -33,12 +33,11 @@ export class MemberRepository extends Repository<member> {
       const savedInfo = await this.save(user);
       return savedInfo;
     } catch (error) {
-      if (error.code == '23505') {
+      if (error.errno == '1062') {
         throw new ConflictException('existing_email');
       } else {
         throw new InternalServerErrorException(error);
       }
     }
   }
-
 }
