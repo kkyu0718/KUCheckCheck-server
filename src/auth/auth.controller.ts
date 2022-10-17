@@ -39,7 +39,7 @@ export class AuthController {
     const getUserInfoDto: GetUserInfoDto = {
       id: id,
     };
-    return this.authService.getUserInfo(getUserInfoDto);
+    return this.authService.getUserInfoById(getUserInfoDto);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -49,6 +49,6 @@ export class AuthController {
       ...body,
       id: id,
     };
-    return this.authService.updateUserInfo(updateUserInfoDto);
+    return this.authService.updateUserInfoById(updateUserInfoDto);
   }
 }

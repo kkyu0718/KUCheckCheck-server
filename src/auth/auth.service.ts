@@ -1,6 +1,7 @@
 import {
   ConflictException,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -33,8 +34,9 @@ export class AuthService {
 
   async validateDuplicateMember(signUpInfoDto: SignUpInfoDto) {
     const { email }: { email: string } = signUpInfoDto;
-    const result: member = await this.authRepository.findByEmail(email);
-    if (result) {
+    try {
+      await this.authRepository.findByEmailOrFail(email);
+    } catch {
       throw new ConflictException('existing_email');
     }
   }
@@ -42,20 +44,28 @@ export class AuthService {
   async signIn(signInInfoDto: SignInInfoDto) {
     const { email, password }: { email: string; password: string } =
       signInInfoDto;
-    const user: member = await this.authRepository.findByEmail(email);
-    if (!user) throw new NotFoundException('user_not_found');
+    const user: member = await this.authRepository
+      .findByEmailOrFail(email)
+      .catch(() => {
+        throw new NotFoundException('user_not_found');
+      });
 
-    if (await this.authRepository.comparePassword(password, user.password)) {
+    try {
+      await this.authRepository.comparePassword(password, user.password);
       const signOption: object = { expiresIn: '2h' };
       return this.authRepository.createAccessToken(user, signOption);
-    } else {
+    } catch {
       throw new UnauthorizedException('login_failure');
     }
   }
 
   async getUserInfoById(getUserInfoDto: GetUserInfoDto) {
     const { id } = getUserInfoDto;
-    return await this.authRepository.findById(id);
+    try {
+      return await this.authRepository.findByIdOrFail(id);
+    } catch {
+      throw new NotFoundException('user_not_found');
+    }
   }
 
   async updateUserInfoById(updateUserInfoDto: UpdateUserInfoDto) {
@@ -64,12 +74,16 @@ export class AuthService {
     const hashedPassword = await this.authRepository.hashPassword(password);
     const body = updateUserInfoDto;
     body['password'] = hashedPassword;
-    await this.authRepository.update(id, body);
+    try {
+      await this.authRepository.update(id, body);
 
-    return {
-      status: 200,
-      message: 'update success',
-      data: await this.authRepository.findById(id),
-    };
+      return {
+        status: 200,
+        message: 'update success',
+        data: await this.authRepository.findById(id),
+      };
+    } catch (e) {
+      throw new InternalServerErrorException(e.message);
+    }
   }
 }

@@ -50,8 +50,16 @@ export class AuthRepository extends Repository<member> {
     return await this.findOneBy({ email });
   }
 
+  async findByEmailOrFail(email: string): Promise<member> {
+    return await this.findOneByOrFail({ email });
+  }
+
   async findById(id: number): Promise<member> {
     return await this.findOneBy({ id });
+  }
+
+  async findByIdOrFail(id: number): Promise<member> {
+    return await this.findOneByOrFail({ id });
   }
 
   async saveUser(signUpInfoDto: SignUpInfoDto): Promise<any> {
