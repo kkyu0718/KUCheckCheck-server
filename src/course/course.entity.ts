@@ -75,8 +75,8 @@ export class course extends BaseEntity {
   @Column({ type: 'varchar', length: 254, comment: '유의사항', nullable: true })
   notice: string;
 
-  @Column({ type: 'json', comment: '주요기술 스택' })
-  language: string | object;
+  @Column({ type: 'json', comment: '주요기술 스택', nullable: true })
+  language: object;
 
   @Column({ type: 'json', comment: '세부기술 스택', nullable: true })
   detailStack: object;
