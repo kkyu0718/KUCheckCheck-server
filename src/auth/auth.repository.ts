@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { member } from './member.entity';
-import * as bcrypt from 'bcryptjs';
 import { SignUpInfoDto } from './dto/auth-credential.dto';
-import { JwtSignOptions, JwtService } from '@nestjs/jwt';
-import { UserRole } from './role/user.role';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthRepository extends Repository<member> {
@@ -16,36 +14,6 @@ export class AuthRepository extends Repository<member> {
     );
   }
 
-  async hashPassword(password: string): Promise<string> {
-    const salt: string = await bcrypt.genSalt();
-    return await bcrypt.hash(password, salt);
-  }
-
-  async comparePassword(
-    dbPassword: string,
-    inputPassword: string,
-  ): Promise<boolean> {
-    return await bcrypt.compare(dbPassword, inputPassword);
-  }
-
-  async createAccessToken(user: member, option: JwtSignOptions) {
-    const {
-      id,
-      email,
-      name,
-      role,
-    }: { id: number; email: string; name: string; role: UserRole } = user;
-    const payload: { id: number; email: string; name: string; role: UserRole } =
-      {
-        id,
-        email,
-        name,
-        role,
-      };
-    const accessToken: string = await this.jwtService.sign(payload, option);
-    return { accessToken };
-  }
-
   async findByEmail(email: string): Promise<member> {
     return await this.findOneBy({ email });
   }
@@ -54,12 +22,9 @@ export class AuthRepository extends Repository<member> {
     return await this.findOneByOrFail({ email });
   }
 
-  async findById(id: number): Promise<member> {
-    return await this.findOneBy({ id });
-  }
-
   async findByIdOrFail(id: number): Promise<member> {
-    return await this.findOneByOrFail({ id });
+    console.log(await this.findOneOrFail({ where: { id } }));
+    return await this.findOneOrFail({ where: { id } });
   }
 
   async saveUser(signUpInfoDto: SignUpInfoDto): Promise<any> {

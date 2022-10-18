@@ -1,3 +1,4 @@
+import { JwtService } from '@nestjs/jwt';
 import {
   ConflictException,
   Injectable,
@@ -7,36 +8,37 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
-  GetUserInfoDto,
   SignInInfoDto,
   SignUpInfoDto,
   UpdateUserInfoDto,
 } from './dto/auth-credential.dto';
 import { AuthRepository } from './auth.repository';
 import { member } from './member.entity';
+import * as bcrypt from 'bcryptjs';
+import { UserRole } from './role/user.role';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(AuthRepository)
     private authRepository: AuthRepository,
+    private jwtService: JwtService,
   ) {}
 
   async signUp(signUpInfoDto: SignUpInfoDto) {
     const { password }: { password: string } = signUpInfoDto;
-    const hashedPassword: string = await this.authRepository.hashPassword(
-      password,
-    );
+    const salt: string = await bcrypt.genSalt();
+    const hashedPassword: string = await bcrypt.hash(password, salt);
     signUpInfoDto['password'] = hashedPassword;
     await this.validateDuplicateMember(signUpInfoDto);
-    return this.authRepository.saveUser(signUpInfoDto);
+    return await this.authRepository.saveUser(signUpInfoDto);
   }
 
   async validateDuplicateMember(signUpInfoDto: SignUpInfoDto) {
     const { email }: { email: string } = signUpInfoDto;
-    try {
-      await this.authRepository.findByEmailOrFail(email);
-    } catch {
+
+    const result: member = await this.authRepository.findByEmail(email);
+    if (result) {
       throw new ConflictException('existing_email');
     }
   }
@@ -50,17 +52,27 @@ export class AuthService {
         throw new NotFoundException('user_not_found');
       });
 
-    try {
-      await this.authRepository.comparePassword(password, user.password);
+    if (await bcrypt.compare(password, user.password)) {
+      const payload: {
+        id: number;
+        email: string;
+        name: string;
+        role: UserRole;
+      } = {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+      };
       const signOption: object = { expiresIn: '2h' };
-      return this.authRepository.createAccessToken(user, signOption);
-    } catch {
-      throw new UnauthorizedException('login_failure');
+      const accessToken: string = this.jwtService.sign(payload, signOption);
+      return { accessToken };
     }
+
+    throw new UnauthorizedException('login_failure');
   }
 
-  async getUserInfoById(getUserInfoDto: GetUserInfoDto) {
-    const { id } = getUserInfoDto;
+  async getUserInfoById(id: number) {
     try {
       return await this.authRepository.findByIdOrFail(id);
     } catch {
@@ -71,7 +83,8 @@ export class AuthService {
   async updateUserInfoById(updateUserInfoDto: UpdateUserInfoDto) {
     const { id, password }: { id: number; password: string } =
       updateUserInfoDto;
-    const hashedPassword = await this.authRepository.hashPassword(password);
+    const salt: string = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(password, salt);
     const body = updateUserInfoDto;
     body['password'] = hashedPassword;
     try {
@@ -80,7 +93,7 @@ export class AuthService {
       return {
         status: 200,
         message: 'update success',
-        data: await this.authRepository.findById(id),
+        data: await this.authRepository.findByIdOrFail(id),
       };
     } catch (e) {
       throw new InternalServerErrorException(e.message);
