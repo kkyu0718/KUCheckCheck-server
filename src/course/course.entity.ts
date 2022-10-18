@@ -48,7 +48,7 @@ export class course extends BaseEntity {
     comment: '활동 소개',
     nullable: true,
   })
-  introdcution: string;
+  introduction: string;
 
   @Column({
     type: 'varchar',
