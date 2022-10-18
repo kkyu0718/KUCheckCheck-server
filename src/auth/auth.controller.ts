@@ -36,10 +36,7 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Get('/user/:id')
   getUserInfo(@Param('id', ParseIntPipe) id: number) {
-    const getUserInfoDto: GetUserInfoDto = {
-      id: id,
-    };
-    return this.authService.getUserInfoById(getUserInfoDto);
+    return this.authService.getUserInfoById(id);
   }
 
   @UseGuards(JwtAuthGuard)
