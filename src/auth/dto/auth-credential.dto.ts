@@ -1,8 +1,3 @@
-export enum UserRole {
-  MEMBER = 'MEMBER', // index 0
-  MANAGER = 'MANAGER', // index 1
-}
-
 export class SignUpInfoDto {
   // 필수 입력
   email: string;

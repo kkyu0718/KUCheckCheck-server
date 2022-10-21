@@ -36,10 +36,7 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Get('/user/:id')
   getUserInfo(@Param('id', ParseIntPipe) id: number) {
-    const getUserInfoDto: GetUserInfoDto = {
-      id: id,
-    };
-    return this.authService.getUserInfo(getUserInfoDto);
+    return this.authService.getUserInfoById(id);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -49,6 +46,6 @@ export class AuthController {
       ...body,
       id: id,
     };
-    return this.authService.updateUserInfo(updateUserInfoDto);
+    return this.authService.updateUserInfoById(updateUserInfoDto);
   }
 }

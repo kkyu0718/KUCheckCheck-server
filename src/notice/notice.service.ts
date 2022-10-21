@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { NoticeRepository } from './notice.repository';
-import { JwtService } from '@nestjs/jwt';
-import { MemberRepository } from 'src/auth/member.repository';
 import { CreateNoticeDto, UpdateNoticeDto } from './dto/notice.dto';
 
 @Injectable()
@@ -10,8 +8,6 @@ export class NoticeService {
   constructor(
     @InjectRepository(NoticeRepository)
     private noticeRepository: NoticeRepository,
-    private memberRepository: MemberRepository,
-    private jwtService: JwtService,
   ) {}
 
   async createNotice(createNoticeDto: CreateNoticeDto) {
