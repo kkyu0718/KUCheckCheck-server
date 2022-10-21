@@ -23,11 +23,10 @@ export class AuthRepository extends Repository<member> {
   }
 
   async findByIdOrFail(id: number): Promise<member> {
-    console.log(await this.findOneOrFail({ where: { id } }));
-    return await this.findOneOrFail({ where: { id } });
+    return await this.findOneByOrFail({ id });
   }
 
-  async saveUser(signUpInfoDto: SignUpInfoDto): Promise<any> {
+  async saveUserOrFail(signUpInfoDto: SignUpInfoDto): Promise<any> {
     const user = this.create(signUpInfoDto);
     return await this.save(user);
   }

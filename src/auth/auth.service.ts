@@ -1,11 +1,5 @@
 import { JwtService } from '@nestjs/jwt';
-import {
-  ConflictException,
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   SignInInfoDto,
@@ -30,27 +24,13 @@ export class AuthService {
     const salt: string = await bcrypt.genSalt();
     const hashedPassword: string = await bcrypt.hash(password, salt);
     signUpInfoDto['password'] = hashedPassword;
-    await this.validateDuplicateMember(signUpInfoDto);
-    return await this.authRepository.saveUser(signUpInfoDto);
-  }
-
-  async validateDuplicateMember(signUpInfoDto: SignUpInfoDto) {
-    const { email }: { email: string } = signUpInfoDto;
-
-    const result: member = await this.authRepository.findByEmail(email);
-    if (result) {
-      throw new ConflictException('existing_email');
-    }
+    return await this.authRepository.saveUserOrFail(signUpInfoDto);
   }
 
   async signIn(signInInfoDto: SignInInfoDto) {
     const { email, password }: { email: string; password: string } =
       signInInfoDto;
-    const user: member = await this.authRepository
-      .findByEmailOrFail(email)
-      .catch(() => {
-        throw new NotFoundException('user_not_found');
-      });
+    const user: member = await this.authRepository.findByEmailOrFail(email);
 
     if (await bcrypt.compare(password, user.password)) {
       const payload: {
@@ -67,17 +47,13 @@ export class AuthService {
       const signOption: object = { expiresIn: '2h' };
       const accessToken: string = this.jwtService.sign(payload, signOption);
       return { accessToken };
+    } else {
+      throw new HttpException('login_failure', HttpStatus.UNAUTHORIZED);
     }
-
-    throw new UnauthorizedException('login_failure');
   }
 
   async getUserInfoById(id: number) {
-    try {
-      return await this.authRepository.findByIdOrFail(id);
-    } catch {
-      throw new NotFoundException('user_not_found');
-    }
+    return await this.authRepository.findByIdOrFail(id);
   }
 
   async updateUserInfoById(updateUserInfoDto: UpdateUserInfoDto) {
@@ -87,16 +63,12 @@ export class AuthService {
     const hashedPassword = await bcrypt.hash(password, salt);
     const body = updateUserInfoDto;
     body['password'] = hashedPassword;
-    try {
-      await this.authRepository.update(id, body);
+    await this.authRepository.update(id, body);
 
-      return {
-        status: 200,
-        message: 'update success',
-        data: await this.authRepository.findByIdOrFail(id),
-      };
-    } catch (e) {
-      throw new InternalServerErrorException(e.message);
-    }
+    return {
+      status: 200,
+      message: 'update success',
+      data: await this.authRepository.findByIdOrFail(id),
+    };
   }
 }
