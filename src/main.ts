@@ -10,8 +10,8 @@ async function bootstrap() {
   const port = serverConfig.port;
 
   app.useGlobalFilters(new GlobalExceptionFilter());
-  app.enableCors();
   app.useGlobalInterceptors(new TransformationInterceptor());
+  app.enableCors();
   await app.listen(port);
 }
 bootstrap();
