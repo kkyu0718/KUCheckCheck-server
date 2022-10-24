@@ -15,7 +15,7 @@ export class NoticeService {
   }
 
   async getAllNotice() {
-    return this.noticeRepository.find();
+    return this.noticeRepository.find({ where: { isShow: true } });
   }
 
   async updateNotice(updateNoticeDto: UpdateNoticeDto) {
