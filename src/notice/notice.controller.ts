@@ -25,8 +25,9 @@ export class NoticeController {
   async createNotice(@DecodeToken() decodedToken, @Body() body) {
     const userId = decodedToken['id'];
     const createNoticeDto: CreateNoticeDto = {
-      createdBy: userId,
       ...body,
+      createdBy: userId,
+      updatedBy: userId,
     };
     return this.noticeService.createNotice(createNoticeDto);
   }

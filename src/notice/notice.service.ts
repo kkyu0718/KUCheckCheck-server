@@ -11,7 +11,7 @@ export class NoticeService {
   ) {}
 
   async createNotice(createNoticeDto: CreateNoticeDto) {
-    return this.noticeRepository.createNotice(createNoticeDto);
+    return await this.noticeRepository.createNotice(createNoticeDto);
   }
 
   async getAllNotice() {
@@ -19,6 +19,14 @@ export class NoticeService {
   }
 
   async updateNotice(updateNoticeDto: UpdateNoticeDto) {
-    return this.noticeRepository.updateNotice(updateNoticeDto);
+    const { noticeId, ...body } = updateNoticeDto;
+
+    await this.noticeRepository.update(noticeId, body);
+
+    const updateNotice = await this.noticeRepository.findOneBy({
+      id: noticeId,
+    });
+
+    return updateNotice;
   }
 }
