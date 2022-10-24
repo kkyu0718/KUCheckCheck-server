@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as config from 'config';
 import { GlobalExceptionFilter } from './auth/filter/global-exception.filter';
+import { TransformationInterceptor } from './global/TransformationInterceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -9,6 +10,7 @@ async function bootstrap() {
   const port = serverConfig.port;
 
   app.useGlobalFilters(new GlobalExceptionFilter());
+  app.useGlobalInterceptors(new TransformationInterceptor());
   app.enableCors();
   await app.listen(port);
 }
