@@ -5,10 +5,6 @@ export class CreateAttendanceDto {
   attendance: object;
 }
 
-export class GetAttendanceDto {
-  courseId: number;
-}
-
 export class UpdateAttendanceDto {
   memberId: number;
   courseId: number;
