@@ -12,7 +12,7 @@ import { DecodeToken } from 'src/auth/decode-token.decorator';
 import { JwtAuthGuard } from 'src/auth/jwt.guard';
 import { Roles } from 'src/auth/roles.decorator';
 import { RolesGuard } from 'src/auth/roles.guard';
-import { CreateWeekDto, GetWeekDto, UpdateWeekDto } from './dto/week.dto';
+import { CreateWeekDto, UpdateWeekDto } from './dto/week.dto';
 import { WeekService } from './week.service';
 import * as dayjs from 'dayjs';
 import * as utc from 'dayjs/plugin/utc';
@@ -63,20 +63,7 @@ export class WeekController {
   }
 
   @Get('/')
-  getWeek(@Query('date') dateInput) {
-    let date;
-    if (dateInput == undefined) {
-      dayjs.extend(utc);
-      dayjs.extend(timezone);
-      date = dayjs.utc().tz('Asia/Seoul').format('YYYY-MM-DD');
-    } else {
-      date = dateInput;
-    }
-
-    const getWeekDto: GetWeekDto = {
-      date,
-    };
-
-    return this.weekService.getWeek(getWeekDto);
+  getWeek(@Query('date') dateInput): Promise<object> {
+    return this.weekService.getWeek(dateInput);
   }
 }

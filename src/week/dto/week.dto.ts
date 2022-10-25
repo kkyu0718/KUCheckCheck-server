@@ -28,7 +28,3 @@ export class UpdateWeekDto {
   semester: string;
   updatedBy: number;
 }
-
-export class GetWeekDto {
-  date?: Date;
-}
