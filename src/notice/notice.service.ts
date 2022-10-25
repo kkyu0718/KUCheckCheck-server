@@ -11,7 +11,7 @@ export class NoticeService {
   ) {}
 
   async createNotice(createNoticeDto: CreateNoticeDto) {
-    return await this.noticeRepository.createNotice(createNoticeDto);
+    return await this.noticeRepository.save(createNoticeDto);
   }
 
   async getAllNotice() {
