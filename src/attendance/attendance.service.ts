@@ -10,7 +10,6 @@ export class AttendanceService {
     createAttendanceDto: CreateAttendanceDto,
   ): Promise<attendance> {
     return await this.attendanceRepository.saveAttendance(createAttendanceDto);
-    // return this.attendanceRepository.createAttendance(createAttendanceDto);
   }
 
   async getAttendance(courseId: number): Promise<attendance[]> {
