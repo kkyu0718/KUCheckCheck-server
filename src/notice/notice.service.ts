@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { NoticeRepository } from './notice.repository';
 import { CreateNoticeDto, UpdateNoticeDto } from './dto/notice.dto';
+import { notice } from './notice.entity';
 
 @Injectable()
 export class NoticeService {
@@ -10,15 +11,15 @@ export class NoticeService {
     private noticeRepository: NoticeRepository,
   ) {}
 
-  async createNotice(createNoticeDto: CreateNoticeDto) {
+  async createNotice(createNoticeDto: CreateNoticeDto): Promise<notice> {
     return await this.noticeRepository.save(createNoticeDto);
   }
 
-  async getAllNotice() {
+  async getAllNotice(): Promise<notice[]> {
     return this.noticeRepository.find({ where: { isShow: true } });
   }
 
-  async updateNotice(updateNoticeDto: UpdateNoticeDto) {
+  async updateNotice(updateNoticeDto: UpdateNoticeDto): Promise<notice> {
     const { noticeId, ...body } = updateNoticeDto;
 
     await this.noticeRepository.update(noticeId, body);
