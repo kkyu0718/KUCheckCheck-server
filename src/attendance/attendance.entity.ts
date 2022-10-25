@@ -30,7 +30,7 @@ export class attendance extends BaseEntity {
   @JoinColumn({ name: 'courseId' })
   courseId: course['id'];
 
-  @Column({ type: 'boolean', width:1,  default: false, comment: '출석 담당자' })
+  @Column({ type: 'boolean', width: 1, default: false, comment: '출석 담당자' })
   isMaster: boolean;
 
   @Column({ type: 'json', default: null, comment: '출석 체크 리스트' })
