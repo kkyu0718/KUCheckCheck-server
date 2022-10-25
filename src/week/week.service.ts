@@ -60,12 +60,7 @@ export class WeekService {
       date = getNowDate();
     }
 
-    const [weeks] = await this.weekRepository.find({
-      order: {
-        id: 'DESC',
-      },
-      take: 1,
-    });
+    const weeks = await this.weekRepository.findOneSemesterIdDesc();
 
     const weekObject = {
       week1: weeks.week1,

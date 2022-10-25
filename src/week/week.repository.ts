@@ -11,4 +11,14 @@ export class WeekRepository extends Repository<week> {
       dataSource.createQueryRunner(),
     );
   }
+
+  async findOneSemesterIdDesc(): Promise<week> {
+    const [weeks] = await this.find({
+      order: {
+        semesterId: 'desc',
+      },
+      take: 1,
+    });
+    return weeks;
+  }
 }
