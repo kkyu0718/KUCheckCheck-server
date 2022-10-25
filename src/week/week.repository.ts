@@ -12,10 +12,10 @@ export class WeekRepository extends Repository<week> {
     );
   }
 
-  async findOneSemesterIdDesc(): Promise<week> {
+  async findOneIdDesc(): Promise<week> {
     const [weeks] = await this.find({
       order: {
-        semesterId: 'desc',
+        id: 'desc',
       },
       take: 1,
     });

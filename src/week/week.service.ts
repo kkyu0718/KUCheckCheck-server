@@ -60,7 +60,7 @@ export class WeekService {
       date = getNowDate();
     }
 
-    const weeks = await this.weekRepository.findOneSemesterIdDesc();
+    const weeks = await this.weekRepository.findOneIdDesc();
 
     const weekObject = {
       week1: weeks.week1,
@@ -83,6 +83,7 @@ export class WeekService {
     }
 
     return {
+      week: null,
       message: '해당 주차는 존재하지 않습니다.',
     };
   }
