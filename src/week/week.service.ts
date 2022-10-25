@@ -1,19 +1,41 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateWeekDto, UpdateWeekDto } from './dto/week.dto';
 import { WeekRepository } from './week.repository';
 import { getNowDate } from '../utils/getAsiaTime';
 import { isBetweenWeek } from 'src/utils/isBetweenWeek';
+import { SemesterRepository } from 'src/semester/semester.repository';
 
 @Injectable()
 export class WeekService {
   constructor(
     @InjectRepository(WeekRepository)
     private weekRepository: WeekRepository,
+    private semesterRepository: SemesterRepository,
   ) {}
 
   async createWeek(createWeekDto: CreateWeekDto) {
-    return this.weekRepository.createWeek(createWeekDto);
+    const { semesterYear, semester, ...body } = createWeekDto;
+    const semesterData = await this.semesterRepository.findOne({
+      where: {
+        semester: semester,
+        semesterYear: semesterYear,
+      },
+    });
+
+    if (!semesterData) {
+      throw new InternalServerErrorException(
+        `학기 ${semesterYear}-${semester}가 등록되어 있지 않습니다`,
+      );
+    }
+
+    const semesterId = semesterData.id;
+    const data = {
+      semesterId,
+      ...body,
+    };
+
+    return await this.weekRepository.save(data);
   }
 
   async updateWeek(updateWeekDto: UpdateWeekDto) {
