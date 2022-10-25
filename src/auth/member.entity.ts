@@ -100,7 +100,7 @@ export class member extends BaseEntity {
   @JoinColumn()
   courses: course[];
 
-  @OneToMany(() => attendance, (attendance) => attendance, {
+  @OneToMany(() => attendance, (attendance) => attendance.memberId, {
     eager: false,
   })
   @JoinColumn()

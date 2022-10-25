@@ -28,6 +28,7 @@ export class AttendanceRepository extends Repository<attendance> {
   ): Promise<attendance[]> {
     return this.createQueryBuilder('attendance')
       .leftJoinAndSelect('attendance.courseId', 'courseId')
+      .leftJoinAndSelect('attendance.memberId', 'memberId')
       .where('attendance.courseId = :courseId', { courseId })
       .getMany();
   }
@@ -37,7 +38,8 @@ export class AttendanceRepository extends Repository<attendance> {
     memberId: number,
   ): Promise<attendance> {
     return await this.createQueryBuilder('attendance')
-      .leftJoinAndSelect('attendance.courseId', 'attendance.memberId')
+    .leftJoinAndSelect('attendance.courseId', 'courseId')
+    .leftJoinAndSelect('attendance.memberId', 'memberId')
       .where('attendance.courseId = :courseId', { courseId })
       .andWhere('attendance.memberId = :memberId', { memberId })
       .getOne();
