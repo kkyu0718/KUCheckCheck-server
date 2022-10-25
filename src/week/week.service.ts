@@ -5,6 +5,7 @@ import { WeekRepository } from './week.repository';
 import { getNowDate } from '../utils/getAsiaTime';
 import { isBetweenWeek } from 'src/utils/isBetweenWeek';
 import { SemesterRepository } from 'src/semester/semester.repository';
+import { week } from './week.entity';
 
 @Injectable()
 export class WeekService {
@@ -14,14 +15,12 @@ export class WeekService {
     private semesterRepository: SemesterRepository,
   ) {}
 
-  async createWeek(createWeekDto: CreateWeekDto) {
+  async createWeek(createWeekDto: CreateWeekDto): Promise<week> {
     const { semesterYear, semester, ...body } = createWeekDto;
-    const semesterData = await this.semesterRepository.findOne({
-      where: {
-        semester: semester,
-        semesterYear: semesterYear,
-      },
-    });
+    const semesterData = await this.semesterRepository.findOneBySemesterOrFail(
+      semester,
+      semesterYear,
+    );
 
     if (!semesterData) {
       throw new InternalServerErrorException(
@@ -38,8 +37,20 @@ export class WeekService {
     return await this.weekRepository.save(data);
   }
 
-  async updateWeek(updateWeekDto: UpdateWeekDto) {
-    return this.weekRepository.updateWeek(updateWeekDto);
+  async updateWeek(updateWeekDto: UpdateWeekDto): Promise<week> {
+    const { semesterYear, semester, ...body } = updateWeekDto;
+    const semesterData = await this.semesterRepository.findOneBySemesterOrFail(
+      semester,
+      semesterYear,
+    );
+
+    const semesterId = semesterData.id;
+
+    await this.weekRepository.update(semesterId, body);
+
+    return await this.weekRepository.findOneBy({
+      semesterId: semesterId,
+    });
   }
 
   async getWeek(dateInput): Promise<object> {

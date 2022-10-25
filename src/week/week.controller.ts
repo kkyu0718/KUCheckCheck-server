@@ -13,6 +13,7 @@ import { JwtAuthGuard } from 'src/auth/jwt.guard';
 import { Roles } from 'src/auth/roles.decorator';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { CreateWeekDto, UpdateWeekDto } from './dto/week.dto';
+import { week } from './week.entity';
 import { WeekService } from './week.service';
 
 @Controller('week')
@@ -28,7 +29,7 @@ export class WeekController {
     @Body() body,
     @Query('semesterYear') semesterYear,
     @Query('semester') semester,
-  ) {
+  ): Promise<week> {
     const user = decodedToken['id'];
     const createWeekDto: CreateWeekDto = {
       ...body,
@@ -48,7 +49,7 @@ export class WeekController {
     @Body() body,
     @Query('semesterYear') semesterYear,
     @Query('semester') semester,
-  ) {
+  ): Promise<week> {
     const user = decodedToken['id'];
     const updateWeekDto: UpdateWeekDto = {
       ...body,
