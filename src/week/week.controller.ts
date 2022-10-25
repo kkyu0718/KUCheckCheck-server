@@ -14,9 +14,6 @@ import { Roles } from 'src/auth/roles.decorator';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { CreateWeekDto, UpdateWeekDto } from './dto/week.dto';
 import { WeekService } from './week.service';
-import * as dayjs from 'dayjs';
-import * as utc from 'dayjs/plugin/utc';
-import * as timezone from 'dayjs/plugin/timezone';
 
 @Controller('week')
 @UseGuards(RolesGuard)
