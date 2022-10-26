@@ -21,4 +21,12 @@ export class WeekRepository extends Repository<week> {
     });
     return weeks;
   }
+
+  async findBySemesterId(semesterId: number): Promise<week> {
+    return await this.findOneBy({
+      semester: {
+        id: semesterId,
+      },
+    });
+  }
 }

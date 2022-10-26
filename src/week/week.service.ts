@@ -28,9 +28,8 @@ export class WeekService {
       );
     }
 
-    const semesterId = semesterData.id;
     const data = {
-      semesterId,
+      semester: semesterData,
       ...body,
     };
 
@@ -46,11 +45,9 @@ export class WeekService {
 
     const semesterId = semesterData.id;
 
-    await this.weekRepository.update(semesterId, body);
+    await this.weekRepository.update({ semester: { id: semesterId } }, body);
 
-    return await this.weekRepository.findOneBy({
-      semesterId: semesterId,
-    });
+    return await this.weekRepository.findBySemesterId(semesterId);
   }
 
   async getWeek(dateInput): Promise<object> {
