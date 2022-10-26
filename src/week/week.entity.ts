@@ -7,22 +7,23 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
   Unique,
   UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
-@Unique(['semesterId'])
+@Unique(['semester'])
 export class week extends BaseEntity {
   @PrimaryGeneratedColumn('increment', { comment: '학기 ID' })
   id: number;
 
-  @ManyToOne(() => semester, (semester) => semester, {
+  @OneToOne(() => semester, (semester) => semester.id, {
     eager: true,
   }) // FK
   @JoinColumn({ name: 'semesterId' })
-  semesterId: semester['id'];
+  semester: semester;
 
   @Column({
     type: 'timestamp',
