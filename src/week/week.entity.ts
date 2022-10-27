@@ -19,7 +19,7 @@ export class week extends BaseEntity {
   @PrimaryGeneratedColumn('increment', { comment: '학기 ID' })
   id: number;
 
-  @OneToOne(() => semester, (semester) => semester.id, {
+  @OneToOne(() => semester, (semester) => semester, {
     eager: true,
   }) // FK
   @JoinColumn({ name: 'semesterId' })
