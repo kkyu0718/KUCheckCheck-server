@@ -4,6 +4,7 @@ import {
   ArgumentsHost,
   HttpException,
   HttpStatus,
+  UnprocessableEntityException,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { EntityNotFoundError, QueryFailedError, TypeORMError } from 'typeorm';
@@ -31,6 +32,12 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       case EntityNotFoundError:
         status = HttpStatus.NOT_FOUND;
         message = (exception as TypeORMError).message;
+        code = (exception as any).code;
+        break;
+
+      case UnprocessableEntityException:
+        status = HttpStatus.UNPROCESSABLE_ENTITY;
+        message = (exception as QueryFailedError).message;
         code = (exception as any).code;
         break;
 

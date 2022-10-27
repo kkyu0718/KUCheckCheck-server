@@ -1,14 +1,24 @@
-import { Injectable } from '@nestjs/common';
+import { CourseRepository } from './../course/course.repository';
+import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { attendance } from './attendance.entity';
 import { AttendanceRepository } from './attendance.repository';
 import { CreateAttendanceDto, UpdateAttendanceDto } from './dto/attendance.dto';
 
 @Injectable()
 export class AttendanceService {
-  constructor(private attendanceRepository: AttendanceRepository) {}
+  constructor(
+    private attendanceRepository: AttendanceRepository,
+    private courseRepository: CourseRepository,
+  ) {}
+
   async createAttendance(
     createAttendanceDto: CreateAttendanceDto,
   ): Promise<attendance> {
+    const courseId = createAttendanceDto.courseId;
+    const course = await this.courseRepository.findOneBy({ id: courseId });
+    if (!course) {
+      throw new UnprocessableEntityException('not_found_course');
+    }
     return await this.attendanceRepository.saveAttendance(createAttendanceDto);
   }
 
