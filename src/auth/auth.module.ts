@@ -7,6 +7,7 @@ import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
 import { AuthRepository } from './auth.repository';
 import * as config from 'config';
+import { member } from './member.entity';
 
 const jwtConfig = config.get('jwt');
 
@@ -16,7 +17,7 @@ const jwtConfig = config.get('jwt');
     JwtModule.register({
       secret: process.env.JWT_SECRET || jwtConfig.secret,
     }),
-    TypeOrmModule.forFeature([AuthRepository]),
+    TypeOrmModule.forFeature([member]),
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy, AuthRepository],
