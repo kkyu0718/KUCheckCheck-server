@@ -33,7 +33,7 @@ export class AttendanceController {
 
   @Get('/')
   async getAttendance(
-    @Query('courseId', ParseIntPipe) courseId: number,
+    @Query('courseId') courseId: number,
   ): Promise<attendance[]> {
     return this.attendanceService.getAttendance(courseId);
   }
@@ -41,8 +41,8 @@ export class AttendanceController {
   // @UseGuards(IsMasterGuard)
   @Put('/')
   async updateAttendance(
-    @Query('courseId', ParseIntPipe) courseId: number,
-    @Query('memberId', ParseIntPipe) memberId: number,
+    @Query('courseId') courseId: number,
+    @Query('memberId') memberId: number,
     @Body() body,
   ): Promise<attendance> {
     const updateAttendanceDto: UpdateAttendanceDto = {
