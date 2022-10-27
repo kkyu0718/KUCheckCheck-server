@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateWeekDto, UpdateWeekDto } from './dto/week.dto';
 import { WeekRepository } from './week.repository';
@@ -23,7 +23,7 @@ export class WeekService {
     );
 
     if (!semesterData) {
-      throw new InternalServerErrorException(
+      throw new UnprocessableEntityException(
         `학기 ${semesterYear}-${semester}가 등록되어 있지 않습니다`,
       );
     }
