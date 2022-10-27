@@ -29,11 +29,9 @@ export class SemesterRepository extends Repository<semester> {
   }
 
   async findOneBySemesterOrFail(semester, semesterYear) {
-    return await this.findOne({
-      where: {
-        semester: semester,
-        semesterYear: semesterYear,
-      },
+    return await this.findOneBy({
+      semester: semester,
+      semesterYear: semesterYear,
     });
   }
 }
