@@ -5,14 +5,11 @@ import {
   Get,
   Put,
   UseGuards,
-  ValidationPipe,
   Param,
-  ParseIntPipe,
 } from '@nestjs/common';
 
 import { AuthService } from './auth.service';
 import {
-  GetUserInfoDto,
   SignInInfoDto,
   SignUpInfoDto,
   UpdateUserInfoDto,
@@ -24,31 +21,28 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('/signup')
-  signUp(@Body(ValidationPipe) signUpInfoDto: SignUpInfoDto) {
+  signUp(@Body() signUpInfoDto: SignUpInfoDto) {
     return this.authService.signUp(signUpInfoDto);
   }
 
   @Post('/signin')
-  signIn(@Body(ValidationPipe) signInInfoDto: SignInInfoDto) {
+  signIn(@Body() signInInfoDto: SignInInfoDto) {
     return this.authService.signIn(signInInfoDto);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('/user/:id')
-  getUserInfo(@Param('id', ParseIntPipe) id: number) {
-    const getUserInfoDto: GetUserInfoDto = {
-      id: id,
-    };
-    return this.authService.getUserInfo(getUserInfoDto);
+  getUserInfo(@Param('id') id: number) {
+    return this.authService.getUserInfoById(id);
   }
 
   @UseGuards(JwtAuthGuard)
   @Put('/user/:id/update')
-  updateUserinfo(@Body() body, @Param('id', ParseIntPipe) id: number) {
+  updateUserinfo(@Body() body, @Param('id') id: number) {
     const updateUserInfoDto: UpdateUserInfoDto = {
       ...body,
       id: id,
     };
-    return this.authService.updateUserInfo(updateUserInfoDto);
+    return this.authService.updateUserInfoById(updateUserInfoDto);
   }
 }

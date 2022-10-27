@@ -14,7 +14,7 @@ import {
   Unique,
   UpdateDateColumn,
 } from 'typeorm';
-import { UserRole } from './dto/auth-credential.dto';
+import { UserRole } from './role/user.role';
 
 @Entity()
 @Unique(['email'])
@@ -94,7 +94,7 @@ export class member extends BaseEntity {
   @JoinColumn()
   semesters: semester[];
 
-  @OneToMany(() => course, (course) => course.memberId, {
+  @OneToMany(() => course, (course) => course, {
     eager: false,
   })
   @JoinColumn()

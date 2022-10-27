@@ -1,3 +1,4 @@
+import { JwtService } from '@nestjs/jwt';
 import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -5,7 +6,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { JwtStrategy } from './auth/jwt.strategy';
-import { MemberRepository } from './auth/member.repository';
+import { AuthRepository } from './auth/auth.repository';
 import { typeORMConfig } from './configs/typeorm.config';
 import { NoticeModule } from './notice/notice.module';
 import { CourseModule } from './course/course.module';
@@ -24,7 +25,13 @@ import { WeekModule } from './week/week.module';
     WeekModule,
   ],
   controllers: [AppController],
-  providers: [AppService, MemberRepository, JwtStrategy, PassportModule],
+  providers: [
+    AppService,
+    AuthRepository,
+    JwtStrategy,
+    PassportModule,
+    JwtService,
+  ],
   exports: [JwtStrategy, PassportModule],
 })
 export class AppModule {}
