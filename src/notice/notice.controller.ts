@@ -14,10 +14,10 @@ export class NoticeController {
 
   @Post('/')
   // @Roles('MANAGER')
-  async createNotice(@DecodeToken() decodedToken, @Body() body): Promise<notice> {
+  async createNotice(@DecodeToken() decodedToken, @Body() createNoticeDto: CreateNoticeDto): Promise<notice> {
     const userId = decodedToken['id'];
-    const createNoticeDto: CreateNoticeDto = {
-      ...body,
+    createNoticeDto = {
+      ...createNoticeDto,
       createdBy: userId,
       updatedBy: userId,
     };
@@ -30,12 +30,16 @@ export class NoticeController {
   }
 
   @Put('/:id')
-  updateOneNotice(@DecodeToken() decodedToken, @Param('id', ParseIntPipe) id: number, @Body() body): Promise<notice> {
+  updateOneNotice(
+    @DecodeToken() decodedToken,
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateNoticeDto: UpdateNoticeDto,
+  ): Promise<notice> {
     const userId = decodedToken['id'];
-    const updateNoticeDto: UpdateNoticeDto = {
+    updateNoticeDto = {
+      ...updateNoticeDto,
       noticeId: id,
       updatedBy: userId,
-      ...body,
     };
     return this.noticeService.updateNotice(updateNoticeDto);
   }
