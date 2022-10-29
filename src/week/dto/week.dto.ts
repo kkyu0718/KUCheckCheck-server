@@ -28,3 +28,9 @@ export class UpdateWeekDto {
   semester: string;
   updatedBy: number;
 }
+
+export class GetCheckWeekOfDateDto {
+  dateInput?: string;
+  semesterYear: string;
+  semester: string;
+}

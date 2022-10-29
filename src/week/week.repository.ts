@@ -12,16 +12,6 @@ export class WeekRepository extends Repository<week> {
     );
   }
 
-  async findOneIdDesc(): Promise<week> {
-    const [weeks] = await this.find({
-      order: {
-        id: 'desc',
-      },
-      take: 1,
-    });
-    return weeks;
-  }
-
   async findBySemesterId(semesterId: number): Promise<week> {
     return await this.findOneBy({
       semester: {

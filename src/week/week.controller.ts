@@ -12,7 +12,11 @@ import { DecodeToken } from 'src/auth/decode-token.decorator';
 import { JwtAuthGuard } from 'src/auth/jwt.guard';
 import { Roles } from 'src/auth/roles.decorator';
 import { RolesGuard } from 'src/auth/roles.guard';
-import { CreateWeekDto, UpdateWeekDto } from './dto/week.dto';
+import {
+  CreateWeekDto,
+  GetCheckWeekOfDateDto,
+  UpdateWeekDto,
+} from './dto/week.dto';
 import { week } from './week.entity';
 import { WeekService } from './week.service';
 
@@ -61,7 +65,16 @@ export class WeekController {
   }
 
   @Get('/')
-  getWeek(@Query('date') dateInput): Promise<object> {
-    return this.weekService.getWeek(dateInput);
+  getCheckWeekOfDate(
+    @Query('date') dateInput,
+    @Query('semesterYear') semesterYear,
+    @Query('semester') semester,
+  ): Promise<object> {
+    const getCheckWeekOfDateDto: GetCheckWeekOfDateDto = {
+      dateInput,
+      semesterYear,
+      semester,
+    };
+    return this.weekService.getCheckWeekOfDate(getCheckWeekOfDateDto);
   }
 }

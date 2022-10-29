@@ -1,6 +1,10 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateWeekDto, UpdateWeekDto } from './dto/week.dto';
+import {
+  CreateWeekDto,
+  GetCheckWeekOfDateDto,
+  UpdateWeekDto,
+} from './dto/week.dto';
 import { WeekRepository } from './week.repository';
 import { getNowDate } from '../utils/getAsiaTime';
 import { isBetweenWeek } from 'src/utils/isBetweenWeek';
@@ -50,14 +54,31 @@ export class WeekService {
     return await this.weekRepository.findBySemesterId(semesterId);
   }
 
-  async getWeek(dateInput): Promise<object> {
+  async getCheckWeekOfDate(
+    getCheckWeekOfDate: GetCheckWeekOfDateDto,
+  ): Promise<object> {
+    const { dateInput, semesterYear, semester } = getCheckWeekOfDate;
     let date = dateInput;
 
     if (!dateInput) {
       date = getNowDate();
     }
 
-    const weeks = await this.weekRepository.findOneIdDesc();
+    const semesterData = await this.semesterRepository.findOneBySemesterOrFail(
+      semester,
+      semesterYear,
+    );
+
+    const semesterId = semesterData.id;
+
+    if (!semesterData) {
+      return {
+        week: null,
+        message: '해당 주차는 존재하지 않습니다.',
+      };
+    }
+
+    const weeks = await this.weekRepository.findBySemesterId(semesterId);
 
     const weekObject = {
       week1: weeks.week1,

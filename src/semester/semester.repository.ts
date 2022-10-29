@@ -28,7 +28,7 @@ export class SemesterRepository extends Repository<semester> {
     }
   }
 
-  async findOneBySemesterOrFail(semester, semesterYear) {
+  async findOneBySemesterOrFail(semester, semesterYear): Promise<semester> {
     return await this.findOneBy({
       semester: semester,
       semesterYear: semesterYear,
