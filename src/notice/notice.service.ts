@@ -24,9 +24,7 @@ export class NoticeService {
 
     await this.noticeRepository.update(noticeId, body);
 
-    const updateNotice = await this.noticeRepository.findOneBy({
-      id: noticeId,
-    });
+    const updateNotice = await this.noticeRepository.findById(noticeId);
 
     return updateNotice;
   }
