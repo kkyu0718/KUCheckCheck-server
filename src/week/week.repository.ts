@@ -50,7 +50,7 @@ export class WeekRepository extends Repository<week> {
       return result;
     } catch (error) {
       console.log(error);
-      if (error.code === '23505') {
+      if (error.errno === '1062') {
         throw new ConflictException('해당 학기의 week table이 이미 존재합니다');
       } else {
         throw new InternalServerErrorException(error);

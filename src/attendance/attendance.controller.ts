@@ -9,13 +9,10 @@ import {
   ParseIntPipe,
   Put,
 } from '@nestjs/common';
-import {
-  CreateAttendanceDto,
-  GetAttendanceDto,
-  UpdateAttendanceDto,
-} from './dto/attendance.dto';
+import { CreateAttendanceDto, UpdateAttendanceDto } from './dto/attendance.dto';
 import { JwtAuthGuard } from 'src/auth/jwt.guard';
 import { IsMasterGuard } from 'src/auth/is-master.guard';
+import { attendance } from './attendance.entity';
 
 @UseGuards(JwtAuthGuard)
 @Controller('attendance')
@@ -23,7 +20,10 @@ export class AttendanceController {
   constructor(private attendanceService: AttendanceService) {}
   // @UseGuards(IsMasterGuard)
   @Post('/')
-  async createAttendance(@Query('courseId') courseId, @Body() body) {
+  async createAttendance(
+    @Query('courseId', ParseIntPipe) courseId: number,
+    @Body() body,
+  ): Promise<attendance> {
     const createAttendanceDto: CreateAttendanceDto = {
       courseId: courseId,
       ...body,
@@ -32,25 +32,25 @@ export class AttendanceController {
   }
 
   @Get('/')
-  async getAttendance(@Query('courseId', ParseIntPipe) courseId) {
-    const getAttendanceDto: GetAttendanceDto = {
-      courseId: courseId,
-    };
-    return this.attendanceService.getAttendance(getAttendanceDto);
+  async getAttendance(
+    @Query('courseId') courseId: number,
+  ): Promise<attendance[]> {
+    return this.attendanceService.getAttendance(courseId);
   }
 
-  @UseGuards(IsMasterGuard)
+  // @UseGuards(IsMasterGuard)
   @Put('/')
   async updateAttendance(
-    @Query('courseId') courseId,
-    @Query('memberId') memberId,
+    @Query('courseId') courseId: number,
+    @Query('memberId') memberId: number,
     @Body() body,
-  ) {
+  ): Promise<attendance> {
     const updateAttendanceDto: UpdateAttendanceDto = {
       memberId,
       courseId,
       ...body,
     };
+
     return this.attendanceService.updateAttendance(updateAttendanceDto);
   }
 }

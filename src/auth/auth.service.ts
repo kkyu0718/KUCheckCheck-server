@@ -1,70 +1,74 @@
-import {
-  Injectable,
-  NotFoundException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
-  GetUserInfoDto,
   SignInInfoDto,
   SignUpInfoDto,
   UpdateUserInfoDto,
 } from './dto/auth-credential.dto';
-import { MemberRepository } from './member.repository';
+import { AuthRepository } from './auth.repository';
+import { member } from './member.entity';
 import * as bcrypt from 'bcryptjs';
-import { JwtService } from '@nestjs/jwt';
+import { UserRole } from './role/user.role';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(MemberRepository)
-    private memberRepository: MemberRepository,
+    @InjectRepository(AuthRepository)
+    private authRepository: AuthRepository,
     private jwtService: JwtService,
   ) {}
 
   async signUp(signUpInfoDto: SignUpInfoDto) {
-    return this.memberRepository.createUser(signUpInfoDto);
+    const { password }: { password: string } = signUpInfoDto;
+    const salt: string = await bcrypt.genSalt();
+    const hashedPassword: string = await bcrypt.hash(password, salt);
+    signUpInfoDto['password'] = hashedPassword;
+    return await this.authRepository.saveUserOrFail(signUpInfoDto);
   }
 
   async signIn(signInInfoDto: SignInInfoDto) {
-    const { email, password } = signInInfoDto;
-    const user = await this.memberRepository.findOneBy({ email });
-    if (!user) throw new NotFoundException('user_not_found');
+    const { email, password }: { email: string; password: string } =
+      signInInfoDto;
+    const user: member = await this.authRepository.findByEmailOrFail(email);
 
-    if (user && (await bcrypt.compare(password, user.password))) {
-      const payload = {
+    if (await bcrypt.compare(password, user.password)) {
+      const payload: {
+        id: number;
+        email: string;
+        name: string;
+        role: UserRole;
+      } = {
         id: user.id,
         email: user.email,
         name: user.name,
         role: user.role,
       };
-      const accessToken = await this.jwtService.sign(payload, {
-        expiresIn: '2h',
-      });
-
-      const data = {
-        accessToken,
-      };
-      return data;
+      const signOption: object = { expiresIn: '2h' };
+      const accessToken: string = this.jwtService.sign(payload, signOption);
+      return { accessToken };
     } else {
-      throw new UnauthorizedException('login_failure');
+      throw new HttpException('login_failure', HttpStatus.UNAUTHORIZED);
     }
   }
 
-  async getUserInfo(getUserInfoDto: GetUserInfoDto) {
-    const { id } = getUserInfoDto;
-    const userInfo = await this.memberRepository.findOneBy({ id });
-    return userInfo;
+  async getUserInfoById(id: number) {
+    return await this.authRepository.findByIdOrFail(id);
   }
 
-  async updateUserInfo(updateUserInfoDto: UpdateUserInfoDto) {
-    const { id, ...body } = updateUserInfoDto;
-
-    await this.memberRepository.update(id, body);
+  async updateUserInfoById(updateUserInfoDto: UpdateUserInfoDto) {
+    const { id, password }: { id: number; password: string } =
+      updateUserInfoDto;
+    const salt: string = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(password, salt);
+    const body = updateUserInfoDto;
+    body['password'] = hashedPassword;
+    await this.authRepository.update(id, body);
 
     return {
+      status: 200,
       message: 'update success',
-      data: await this.memberRepository.findOneBy({ id }),
+      data: await this.authRepository.findByIdOrFail(id),
     };
   }
 }

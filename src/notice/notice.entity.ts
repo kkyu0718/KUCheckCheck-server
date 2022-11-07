@@ -15,8 +15,8 @@ export class notice extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column({ type: 'bit', default: true, comment: '노출여부' })
-  isShow: number;
+  @Column({ type: 'boolean', width: 1, default: true, comment: '노출여부' })
+  isShow: boolean;
 
   @Column({ type: 'varchar', length: 254, comment: '제목' })
   title: string;

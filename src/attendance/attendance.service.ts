@@ -1,23 +1,40 @@
-import { Injectable } from '@nestjs/common';
+import { CourseRepository } from './../course/course.repository';
+import { Injectable, UnprocessableEntityException } from '@nestjs/common';
+import { attendance } from './attendance.entity';
 import { AttendanceRepository } from './attendance.repository';
-import {
-  CreateAttendanceDto,
-  GetAttendanceDto,
-  UpdateAttendanceDto,
-} from './dto/attendance.dto';
+import { CreateAttendanceDto, UpdateAttendanceDto } from './dto/attendance.dto';
 
 @Injectable()
 export class AttendanceService {
-  constructor(private attendanceRepository: AttendanceRepository) {}
-  async createAttendance(createAttendanceDto: CreateAttendanceDto) {
-    return this.attendanceRepository.createAttendance(createAttendanceDto);
+  constructor(
+    private attendanceRepository: AttendanceRepository,
+    private courseRepository: CourseRepository,
+  ) {}
+
+  async createAttendance(
+    createAttendanceDto: CreateAttendanceDto,
+  ): Promise<attendance> {
+    const courseId = createAttendanceDto.courseId;
+    const course = await this.courseRepository.findOneBy({ id: courseId });
+    if (!course) {
+      throw new UnprocessableEntityException('not_found_course');
+    }
+    return await this.attendanceRepository.saveAttendance(createAttendanceDto);
   }
 
-  async getAttendance(getAttendanceDto: GetAttendanceDto) {
-    return this.attendanceRepository.getAttendance(getAttendanceDto);
+  async getAttendance(courseId: number): Promise<attendance[]> {
+    return this.attendanceRepository.getMultipleAttendanceByCourseId(courseId);
   }
 
   async updateAttendance(updateAttendanceDto: UpdateAttendanceDto) {
-    return this.attendanceRepository.updateAttendance(updateAttendanceDto);
+    const { memberId, courseId, ...body } = updateAttendanceDto;
+    const attendance =
+      this.attendanceRepository.getOneAttendanceByCourseIdAndMemberId(
+        courseId,
+        memberId,
+      );
+    const attendanceId = attendance['id'];
+    this.attendanceRepository.updateAttendanceById(attendanceId, body);
+    return this.attendanceRepository.getOneAttendanceById(attendanceId);
   }
 }

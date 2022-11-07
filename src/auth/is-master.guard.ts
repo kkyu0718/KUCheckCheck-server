@@ -50,7 +50,7 @@ export class IsMasterGuard extends AuthGuard('is-master') {
 
       const isMaster = attendance['isMaster'];
 
-      if (isMaster == 0) {
+      if (isMaster == false) {
         console.log(`memberId ${memberId} 는 master가 아닙니다`);
         return false;
       } else {
