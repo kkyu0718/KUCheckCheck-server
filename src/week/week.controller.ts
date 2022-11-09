@@ -12,11 +12,13 @@ import { DecodeToken } from 'src/auth/decode-token.decorator';
 import { JwtAuthGuard } from 'src/auth/jwt.guard';
 import { Roles } from 'src/auth/roles.decorator';
 import { RolesGuard } from 'src/auth/roles.guard';
-import { CreateWeekDto, GetWeekDto, UpdateWeekDto } from './dto/week.dto';
+import {
+  CreateWeekDto,
+  GetCheckWeekOfDateDto,
+  UpdateWeekDto,
+} from './dto/week.dto';
+import { week } from './week.entity';
 import { WeekService } from './week.service';
-import * as dayjs from 'dayjs';
-import * as utc from 'dayjs/plugin/utc';
-import * as timezone from 'dayjs/plugin/timezone';
 
 @Controller('week')
 @UseGuards(RolesGuard)
@@ -31,7 +33,7 @@ export class WeekController {
     @Body() body,
     @Query('semesterYear') semesterYear,
     @Query('semester') semester,
-  ) {
+  ): Promise<week> {
     const user = decodedToken['id'];
     const createWeekDto: CreateWeekDto = {
       ...body,
@@ -51,7 +53,7 @@ export class WeekController {
     @Body() body,
     @Query('semesterYear') semesterYear,
     @Query('semester') semester,
-  ) {
+  ): Promise<week> {
     const user = decodedToken['id'];
     const updateWeekDto: UpdateWeekDto = {
       ...body,
@@ -63,20 +65,16 @@ export class WeekController {
   }
 
   @Get('/')
-  getWeek(@Query('date') dateInput) {
-    let date;
-    if (dateInput == undefined) {
-      dayjs.extend(utc);
-      dayjs.extend(timezone);
-      date = dayjs.utc().tz('Asia/Seoul').format('YYYY-MM-DD');
-    } else {
-      date = dateInput;
-    }
-
-    const getWeekDto: GetWeekDto = {
-      date,
+  getCheckWeekOfDate(
+    @Query('date') dateInput,
+    @Query('semesterYear') semesterYear,
+    @Query('semester') semester,
+  ): Promise<object> {
+    const getCheckWeekOfDateDto: GetCheckWeekOfDateDto = {
+      dateInput,
+      semesterYear,
+      semester,
     };
-
-    return this.weekService.getWeek(getWeekDto);
+    return this.weekService.getCheckWeekOfDate(getCheckWeekOfDateDto);
   }
 }
