@@ -1,12 +1,15 @@
 export class CreateNoticeDto {
-  createdBy: number;
   title: string;
   content: string;
+  isShow: boolean;
+  createdBy?: number;
+  updatedBy?: number;
 }
 
 export class UpdateNoticeDto {
-  noticeId: number;
-  updatedBy: number;
-  title: string;
-  content: string;
+  noticeId?: number;
+  title?: string;
+  isShow?: boolean;
+  content?: string;
+  updatedBy?: number;
 }
