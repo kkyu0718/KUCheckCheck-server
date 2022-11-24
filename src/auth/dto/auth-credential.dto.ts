@@ -1,35 +1,66 @@
+import { IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
+
 export class SignUpInfoDto {
-  // 필수 입력
+  @IsEmail()
+  @IsNotEmpty()
   email: string;
+
+  @IsNotEmpty()
   password: string;
+
+  @IsNotEmpty()
   name: string;
+
+  @IsNotEmpty()
   comment: string;
 
-  // 선택사항
-  detailComment?: string;
-  githubId?: string;
-  instagramId?: string;
+  @IsOptional()
+  detailComment: string;
+
+  @IsOptional()
+  githubId: string;
+
+  @IsOptional()
+  instagramId: string;
 }
 
 export class SignInInfoDto {
-  // 필수 입력
+  @IsNotEmpty()
   email: string;
+
+  @IsNotEmpty()
   password: string;
 }
 
 export class GetUserInfoDto {
-  id: number; // 요청하는 정보 id
+  @IsNotEmpty()
+  id: number;
 }
 
 export class UpdateUserInfoDto {
+  @IsNotEmpty()
   id: number;
+
+  @IsNotEmpty()
   email: string;
+
+  @IsNotEmpty()
   password: string;
+  @IsNotEmpty()
   name: string;
-  emoji?: string;
+
+  @IsOptional()
+  emoji: string;
+
+  @IsNotEmpty()
   comment: string;
 
-  detailComment?: string;
-  githubId?: string;
-  instagramId?: string;
+  @IsOptional()
+  detailComment: string;
+
+  @IsOptional()
+  githubId: string;
+
+  @IsOptional()
+  instagramId: string;
 }
