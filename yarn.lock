@@ -1749,6 +1749,11 @@
     "libphonenumber-js" "^1.9.43"
     "validator" "^13.7.0"
 
+"class@^0.1.4":
+  "integrity" "sha512-bLVg+g7slPspef6I/W/TkJG3A4XhUPZyjMaeHc23lVm7hr7jaTgpftQAGtKY2UCa67Zfg17sNGsrC74MWsMDaQ=="
+  "resolved" "https://registry.npmjs.org/class/-/class-0.1.4.tgz"
+  "version" "0.1.4"
+
 "cli-cursor@^3.1.0":
   "integrity" "sha512-I/zHAwsKf9FqGoXM4WWRACob9+SNukZTd94DWF57E4toouRulbCxcUh6RKUEOQlYTHJnzkPMySvPNaaSLNfLZw=="
   "resolved" "https://registry.npmjs.org/cli-cursor/-/cli-cursor-3.1.0.tgz"
