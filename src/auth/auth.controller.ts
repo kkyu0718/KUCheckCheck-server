@@ -1,19 +1,7 @@
-import {
-  Body,
-  Controller,
-  Post,
-  Get,
-  Put,
-  UseGuards,
-  Param,
-} from '@nestjs/common';
+import { Body, Controller, Post, Get, Put, UseGuards, Param } from '@nestjs/common';
 
 import { AuthService } from './auth.service';
-import {
-  SignInInfoDto,
-  SignUpInfoDto,
-  UpdateUserInfoDto,
-} from './dto/auth-credential.dto';
+import { SignInInfoDto, SignUpInfoDto, UpdateUserInfoDto } from './dto/auth-credential.dto';
 import { JwtAuthGuard } from './jwt.guard';
 
 @Controller('auth')
